@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: YOUR_URL
-    username: YOUR_USERNAME
-    password: YOUR_PASSWORD
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/${DB_NAME:car}?serverTimezone=UTC
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root1945}
   jpa:
     show-sql: true
     hibernate:
@@ -18,4 +18,4 @@ security:
   jwt:
     token:
       secret-key: secret
-      expire-length: 3600000
+      expire-length: 360000000

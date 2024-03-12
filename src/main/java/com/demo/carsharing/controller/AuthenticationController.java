@@ -29,29 +29,33 @@ public class AuthenticationController {
     private final UserMapper userMapper;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Registration of a new user (default role a CUSTOMER)")
-    public UserResponseDto register(@RequestBody @Valid UserRequestDto userRequestDto) {
-        return userMapper.toDto(authenticationService.register(userRequestDto));
+@PostMapping("/register")
+//    @ResponseStatus(HttpStatus.CREATED)
+   @Operation(summary = "Registration of a new user (default role a CUSTOMER)")
+    public ResponseEntity<Object> register(@RequestBody @Valid UserRequestDto userRequestDto) {
+        User user = authenticationService.register(userRequestDto);
+        return authorizeUser(user);
     }
 
     @PostMapping("/login")
     @Operation(summary = "Get a JWT token for registration user")
     public ResponseEntity<Object> login(@RequestBody @Valid LoginRequestDto loginRequestDto) {
-        User user;
-        try {
-            user = authenticationService
+        User user = authenticationService
                     .login(loginRequestDto.getEmail(), loginRequestDto.getPassword());
-            String token = jwtTokenProvider
-                    .createToken(user.getEmail(), List.of(user.getRole().name()));
-            Map<String, Object> body = new LinkedHashMap<>();
-            body.put("timestamp", LocalDateTime.now().toString());
-            body.put("token", token);
-            body.put("status", HttpStatus.OK.value());
-            return new ResponseEntity<>(body, HttpStatus.OK);
-        } catch (AuthenticationException e) {
-            throw new AuthenticationException("Invalid email or password!");
-        }
+        return authorizeUser(user);
+    }
+
+    private ResponseEntity<Object> authorizeUser(User user) {
+     try {
+        String token = jwtTokenProvider
+                .createToken(user.getEmail(), List.of(user.getRole().name()));
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now().toString());
+        body.put("token", token);
+        body.put("status", HttpStatus.OK.value());
+        return new ResponseEntity<>(body, HttpStatus.OK);
+    } catch (AuthenticationException e) {
+        throw new AuthenticationException("Invalid email or password!");
+    }
     }
 }
