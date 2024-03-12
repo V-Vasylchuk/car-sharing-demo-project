@@ -32,6 +32,8 @@ public class RentalMapper implements DtoMapper<Rental, RentalRequestDto, RentalR
                 .setReturnDate(model.getReturnDate())
                 .setActualReturnDate(model.getActualReturnDate())
                 .setUserId(model.getUser().getId())
+                .setUserFirstName(model.getUser().getFirstName())
+                .setCarBrand(model.getCar().getBrand())
                 .setCarId(model.getCar().getId());
     }
 }
