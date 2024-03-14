@@ -24,10 +24,8 @@
 
   &_wrapper {
     display: flex;
-    margin-top: 10%;
     justify-content: space-between;
-    max-width: 800px;
-    margin: 0 auto;
+    margin: 10% 10%;
     padding: 20px;
     border-radius: 5px;
     position: relative;
@@ -100,6 +98,7 @@
       padding: 13px 50px 13px;
     }
   }
+
 
   @media screen and (max-width: 768px) {
     .car_wrapper {

@@ -15,7 +15,7 @@ function TitleBlock() {
       </div>
       <div className='title_block_img'>
         <img src="http://udc1018.shiningcorp.com/sh_img/index/main_banner/bg.png" alt="" className='img_bg'/>
-        <img className='title_img' src="https://www.freepnglogos.com/uploads/bmw-png/bmw-reviews-and-rating-motor-trend-1.png" alt="" srcset="" />
+        <img className='title_img' src="https://www.freepnglogos.com/uploads/bmw-png/bmw-reviews-and-rating-motor-trend-1.png" alt=""/>
       </div>
     </div>
   )

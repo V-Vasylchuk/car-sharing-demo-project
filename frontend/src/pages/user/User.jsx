@@ -39,7 +39,7 @@ function User() {
 
   const handleLogout = () => {
     setToken(null);
-    navigator("/login")
+    navigator("/")
   }
 
   return (
@@ -51,7 +51,7 @@ function User() {
           <p className='user_info'>Email: <span className='user_info_text'>{user.email}</span> </p>
           <p className='user_info'>Role: <span className='user_info_text'>{user.role}</span> </p>
           <p><Link to="/user/me" className='user_info btn_info'>Edit</Link></p>
-          <p><Link className='user_info btn_info'>Log out</Link></p>
+          <p><Link to='/' className='user_info btn_info'>Log out</Link></p>
         </div>
       ))}
     </div>

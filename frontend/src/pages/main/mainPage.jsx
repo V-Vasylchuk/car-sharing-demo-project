@@ -11,7 +11,7 @@ function MainPage() {
   const navigation = useNavigate();
   useEffect(() => {
     if (getToken() === null) {
-        navigation("/login")
+        navigation("/")
     }
   },[getToken()])
   return (

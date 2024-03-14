@@ -1,0 +1,182 @@
+.login {
+  background-color: #76767a;
+}
+.login .top {
+  padding: 20px 50px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.login .top__button {
+  font-size: 20px;
+  color: white;
+  background-color: rgb(146, 140, 140);
+  border-radius: 5px;
+  border: none;
+  font-weight: 600;
+  padding: 15px 20px;
+  cursor: pointer;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.login .top__button a {
+  text-decoration: none;
+  color: white;
+}
+.login .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.login .container .form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 20%;
+}
+.login .container__title {
+  color: white;
+}
+.login .container p,
+.login .container div {
+  font-family: Lato;
+}
+.login .container .wrapper {
+  height: 97vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.login .container .form-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  max-width: 80%;
+  min-width: 100px;
+  min-height: 400px;
+  padding: 20px 40px;
+  border-radius: 6px;
+  box-shadow: 0px 8px 36px #222;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+.login .container .form-wrapper > h2 {
+  display: flex;
+  justify-content: center;
+  font-family: "Segoe UI", "Ubuntu", "Roboto", "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 2em;
+  font-weight: lighter;
+  margin-top: 0.25em;
+  color: #222;
+}
+.login .container form {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.login .container .info {
+  padding-bottom: 1em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+.login .container label {
+  margin-bottom: 0.5em;
+  color: #ece2e2;
+  font-weight: lighter;
+}
+.login .container input {
+  padding: 10px 10px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid #d6d1d5;
+}
+.login .container input::-moz-placeholder {
+  font-size: 1.2em;
+  font-weight: lighter;
+  color: #bbb;
+}
+.login .container input::placeholder {
+  font-size: 1.2em;
+  font-weight: lighter;
+  color: #bbb;
+}
+.login .container button {
+  min-width: 100%;
+  cursor: pointer;
+  margin-right: 0.25em;
+  margin-top: 0.5em;
+  padding: 0.938em;
+  border: none;
+  border-radius: 4px;
+  background-color: #76767a;
+  color: #100e0e;
+  font-weight: 900;
+}
+.login .container button:hover {
+  background-color: #4A4E69;
+  color: #fefefe;
+}
+.login .container input.error {
+  border: 1px solid #EADAE4;
+}
+.login .container .link {
+  text-decoration: none;
+  color: rgb(251, 251, 251);
+}
+.login .container .error {
+  color: #db2269;
+  font-size: 12px;
+  display: relative;
+}
+.login .container .fullName {
+  margin-right: 1%;
+}
+.login .container .firstName,
+.login .container .lastName,
+.login .container .email,
+.login .container .password {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  color: white;
+}
+.login .container .fullName {
+  width: 100%;
+}
+.login .container .email,
+.login .container .password {
+  width: 100%;
+}
+.login .container .submit {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.login .car_img {
+  opacity: 2;
+  animation: 2s anim-line ease-out;
+  left: 0;
+  position: absolute;
+  bottom: 0px;
+  width: 800px;
+  height: 400px;
+}
+@keyframes anim-line {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  20% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(80%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-100%);
+  }
+}/*# sourceMappingURL=login.css.map */

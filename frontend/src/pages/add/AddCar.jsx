@@ -18,7 +18,7 @@ function AddCar() {
     model: '',
     brand: '',
     inventory: '',
-    dailyFee:'',
+    dailyFee: '',
     type: 'SEDAN',
   });
 
@@ -26,19 +26,25 @@ function AddCar() {
 
   useEffect(() => {
     if (getToken() === null) {
-        navigation("/login")
+      navigation("/")
     }
-  },[getToken()]);
+  }, [getToken()]);
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setCar({ ...car, [name]: value });
 
-    if (value.length < 2 || value.length > 20) {
-      setErrors({ ...errors, [name]: `${name.charAt(0).toUpperCase() + name.slice(1)} must be between 2 and 20 characters` });
+  if (name === 'inventory' || name === 'dailyFee') {
+    if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+      setErrors({ ...errors, [name]: `${name.charAt(0).toUpperCase() + name.slice(1)} must be a number` });
     } else {
       setErrors({ ...errors, [name]: '' });
     }
+  } else {
+    setErrors({ ...errors, [name]: value.length < 2 || value.length > 20 ? `${name.charAt(0).toUpperCase() + name.slice(1)} must be between 2 and 20 characters` : '' });
+  }
+
+  setCar({ ...car, [name]: value });
   };
 
   const onSubmit = async (e) => {
@@ -86,7 +92,7 @@ function AddCar() {
       if (nextField) {
         nextField.focus();
       } else {
-        onSubmit(event); 
+        onSubmit(event);
       }
     }
   };
@@ -111,19 +117,19 @@ function AddCar() {
                 <input type='text' name='brand' value={car.brand} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} noValidate required />
                 {errors.brand && <span className='error'>{errors.brand}</span>}
               </div>
-              {/* <div className='photo'>
+              <div className='photo'>
                 <label htmlFor='photo'>Add Photo</label>
                 <input type='file' name='photo' className='photo_input' onChange={e => onInputChange(e)} />
-              </div> */}
+              </div>
               <div className='brand'>
                 <label htmlFor='inventory'>Inventory</label>
                 <input type='text' name='inventory' value={car.inventory} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} noValidate required />
                 {errors.inventory && <span className='error'>{errors.inventory}</span>}
               </div>
               <div className='brand'>
-                <label htmlFor='dailyFee'>DailyFee</label>
+                <label htmlFor='dailyFee'>Daily Fee</label>
                 <input type='text' name='dailyFee' value={car.dailyFee} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} noValidate required />
-
+                {errors.dailyFee && <span className='error'>{errors.dailyFee}</span>}
               </div>
               {/* <div className='price'>
                 <label htmlFor='price'>Price</label>
@@ -133,10 +139,10 @@ function AddCar() {
               <div className='carType'>
                 <label htmlFor='carType'>Car Type</label>
                 <select name='carType' value={car.type} onChange={(e) => setCar({ ...car, type: e.target.value })} onKeyPress={handleKeyPress}>
-                  <option value='SEDAN'>Sedan</option>
+                  <option value='SEDAN'>SEDAN</option>
                   <option value='SUV'>SUV</option>
-                  <option value='HATCHBACK'>Hatchback</option>
-                  <option value='UNIVERSAL'>Universal</option>
+                  <option value='HATCHBACK'>HATCHBACK</option>
+                  <option value='UNIVERSAL'>UNIVERSAL</option>
                 </select>
               </div>
               <div className='submit'>
