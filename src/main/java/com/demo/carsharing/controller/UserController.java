@@ -27,6 +27,12 @@ public class UserController {
     private final AuthenticationService authenticationService;
     private final DtoMapper<User, UserRequestDto, UserResponseDto> userMapper;
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Get user by id")
+    public UserResponseDto getById(@PathVariable Long id, Authentication authentication) {
+        return userMapper.toDto(userService.findById(id));
+    }
+
     @GetMapping("/me")
     @Operation(summary = "Get my profile info by token")
     public UserResponseDto get(Authentication authentication) {
