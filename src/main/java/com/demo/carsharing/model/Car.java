@@ -7,7 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
 import java.math.BigDecimal;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -27,7 +29,11 @@ public class Car {
     private Type type;
     private Integer inventory;
     private BigDecimal dailyFee;
+    private String imageUrl;
     private boolean deleted;
+    private String bucketName;
+    private String keyName;
+    private String presignedUrl;
 
     public enum Type {
         SEDAN,

@@ -20,6 +20,9 @@
         <java.version>17</java.version>
         <swagger.version>2.3.0</swagger.version>
         <jjwt.version>0.9.1</jjwt.version>
+        <aws.java.sdk.s3.version>1.12.676</aws.java.sdk.s3.version>
+        <software.amazon.awssdk.s3.version>2.25.6</software.amazon.awssdk.s3.version>
+        <aws-java-sdk.version>1.12.364</aws-java-sdk.version>
         <stripe.java.version>24.3.0</stripe.java.version>
 
         <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
@@ -90,6 +93,22 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>${aws-java-sdk.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>${aws.java.sdk.s3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>${software.amazon.awssdk.s3.version}</version>
         </dependency>
         <dependency>
             <groupId>com.stripe</groupId>

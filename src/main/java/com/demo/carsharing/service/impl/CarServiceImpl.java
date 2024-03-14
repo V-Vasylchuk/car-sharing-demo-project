@@ -1,33 +1,48 @@
 package com.demo.carsharing.service.impl;
 
+import com.demo.carsharing.config.AwsClientS3Config;
 import com.demo.carsharing.exception.DataProcessingException;
 import com.demo.carsharing.model.Car;
 import com.demo.carsharing.repository.CarRepository;
+import com.demo.carsharing.service.AwsS3Service;
 import com.demo.carsharing.service.CarService;
+
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
 public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
+    private final AwsS3Service awsS3Service;
+    private final AwsClientS3Config clientS3Config;
+
 
     @Override
     @Transactional
-    public Car createCar(Car car) {
+    public Car createCar(Car car, MultipartFile file) {
+        String fileName = awsS3Service.upload(file);
+        car.setBucketName(clientS3Config.getBucketName());
+        car.setKeyName(fileName);
         return carRepository.save(car);
     }
 
     @Override
     public List<Car> findAll() {
-        return carRepository.findAll();
+        List<Car> carList = carRepository.findAll();
+        carList.forEach(car -> car.setImageUrl(awsS3Service.getUrl(car.getBucketName(), car.getKeyName())));
+        return carList;
     }
 
     @Override
     public Car findById(Long id) {
-        return carRepository.getReferenceById(id);
+        Car car = carRepository.getReferenceById(id);
+        car.setPresignedUrl(awsS3Service.getUrl(car.getBucketName(), car.getKeyName()));
+        return car;
     }
 
     @Override
