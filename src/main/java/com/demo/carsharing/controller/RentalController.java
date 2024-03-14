@@ -36,7 +36,7 @@ public class RentalController {
                 .toDto(rentalService
                         .save(rentalMapper
                                 .toModel(rentalRequestDto)));
-        carService.decreaseInventory(rentalResponseDto.getCarId(), 1); // One car for testing
+        carService.decreaseInventory(rentalResponseDto.getCarId(), 1);
         return rentalResponseDto;
     }
 
