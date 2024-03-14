@@ -29,7 +29,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get user by id")
-    public UserResponseDto getById(@PathVariable Long id, Authentication authentication) {
+    public UserResponseDto getById(@PathVariable Long id) {
         return userMapper.toDto(userService.findById(id));
     }
 
