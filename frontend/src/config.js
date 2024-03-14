@@ -12,4 +12,3 @@ export const getToken = () => {
 export const getBearerToken = () => {
   return 'Bearer ' + token;
 };
-console.log(token)

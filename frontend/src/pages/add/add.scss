@@ -4,6 +4,7 @@
   background-image: url(https://go.trader.ca/wp-content/uploads/2017/08/web-from-background-car.jpg);
   background-repeat: no-repeat;
   background-size: cover;
+  height: 110vh;
   background-position: center;
 
   &::before {
@@ -17,23 +18,25 @@
     z-index: -1;
   }
   .error {
-    color: red;
-    font-size: 12px;
+    color: rgb(130, 7, 7);
+    font-size: 18px;
+    font-weight: 900;
   }
   .container_add {
+    margin: 10% auto;
     padding: 20px;
     border-radius: 5px; 
     position: relative;
     background-color: rgba(255, 255, 255, 0.5); 
     z-index: 0;
     max-width: 800px;
-    margin: 0 auto;
     .container__title {
       font-size: 24px;
       margin-bottom: 20px;
     }
 
     .form-wrapper {
+      
       position: relative;
       z-index: 2;
       width: 60%;

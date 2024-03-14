@@ -16,7 +16,7 @@ function MainCarsList() {
 
   useEffect(() => {
     if (getToken() === null) {
-        navigation("/login")
+        navigation("/")
     }
   },[getToken()]);
   

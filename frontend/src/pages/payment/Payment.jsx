@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getBearerToken, getToken } from '../../config';
 import axios from 'axios';
 import HeaderPages from '../../components/header/HeaderPages';
-import { DateTimeFormatter, LocalDate } from 'js-joda';
+import { DateTimeFormatter, LocalDate, LocalDateTime } from 'js-joda';
 import { useUser } from '../user/userContext';
 
 function Payment() {
@@ -69,7 +69,7 @@ function Payment() {
 
     useEffect(() => {
         if (getToken() === null) {
-            navigation("/login")
+            navigation("/")
         }
     }, [getToken()]);
 
@@ -78,7 +78,7 @@ function Payment() {
         const { name, value } = e.target;
         let parsedValue = value;
         if (name === 'rentalDate' || name === 'returnDate' || name === 'actualReturnDate') {
-            parsedValue = LocalDate.parse(value, DateTimeFormatter.ISO_DATE);
+            parsedValue = LocalDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME);
         }
         setOrder({ ...order, [name]: parsedValue });
     };
@@ -103,10 +103,6 @@ function Payment() {
         try {
             let body = {
                 ...order,
-                rentalDate : order.rentalDate + 'T11:31:22.321Z',
-                returnDate : order.returnDate + 'T11:31:22.321Z',
-                actualReturnDate : order.actualReturnDate + 'T11:31:22.321Z',
-                userId : user.id,
                 carId: car.id
             }
 
@@ -175,17 +171,17 @@ function Payment() {
                         <form onSubmit={onSubmit} noValidate>
                             <div className='rentalDate'>
                                 <label htmlFor='rentalDate'>Rental Date</label>
-                                <input type='date' name='rentalDate' value={order.rentalDate} onChange={onInputChange} onKeyPress={handleKeyPress} />
+                                <input  type="datetime-local" name='rentalDate' value={order.rentalDate} onChange={onInputChange} onKeyPress={handleKeyPress} />
                                 {errors.rentalDate && <span className='error'>{errors.rentalDate}</span>}
                             </div>
                             <div className='returnDate'>
                                 <label htmlFor='returnDate'>Return Date</label>
-                                <input type='date' name='returnDate' value={order.returnDate} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} />
+                                <input type="datetime-local"name='returnDate' value={order.returnDate} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} />
                                 {errors.returnDate && <span className='error'>{errors.returnDate}</span>}
                             </div>
                             <div className='actualReturnDate'>
                                 <label htmlFor='inventory'>Actual Return Date</label>
-                                <input type='date' name='actualReturnDate' value={order.actualReturnDate} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} />
+                                <input type="datetime-local" name='actualReturnDate' value={order.actualReturnDate} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} />
                                 {errors.inventory && <span className='error'>{errors.inventory}</span>}
                             </div>
                             <div className='brand'>
@@ -195,7 +191,7 @@ function Payment() {
                             {user.role === 'MANAGER' ? (
                                 <div className='brand'>
                                 <label htmlFor='userId'>user</label>
-                                <input type='text' name='carId' value={order.userIdId} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} noValidate required />
+                                <input type='text' name='carId' value={order.userId} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} noValidate required />
                             </div>
                             ) : (
                                 <div></div>

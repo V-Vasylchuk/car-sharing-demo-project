@@ -59,7 +59,7 @@ function RegisterPage() {
     }
   };
 
-  const handleSubmit = async (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
 
     try {
@@ -72,7 +72,7 @@ function RegisterPage() {
       const response = await axios.post('http://localhost:8080/register', body);
       const token = response.data.token;
       setToken(token);
-      navigation('/main');
+      navigation('/');
     } catch (error) {
       setErrors('Invalid email or password!');
       console.error('Error logging in:', error);
@@ -82,7 +82,7 @@ function RegisterPage() {
       console.error('Please fill in all required fields');
       return;
     }
-    navigation('/main');
+    navigation('/');
     if (validateForm(errors)) {
       console.info('Valid Form');
     } else {
@@ -105,7 +105,7 @@ function RegisterPage() {
         <h1 className='container__title'>Sign in with your account</h1>
         <div className='wrapper'>
           <div className='form-wrapper'>
-            <form onSubmit={handleSubmit} noValidate>
+            <form onSubmit={onSubmit} noValidate>
               <div className='firstName'>
                 <label htmlFor='firstName'>First Name</label>
                 <input type='text' name='firstName' onChange={handleChange} noValidate required />

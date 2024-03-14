@@ -4,23 +4,63 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { setToken } from '../../config';
 
+const validEmailRegex = RegExp(
+  /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+);
+
 function LoginPage() {
-  const [user, setUser] = useState({ email: '', password: '' });
-  const [error, setError] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState({
+    email: '',
+    password: '',
+  });
+
+ 
+  const validateForm = (error) => {
+    let valid = true;
+    Object.values(error).forEach((val) => val.length > 0 && (valid = false));
+    return valid;
+  };
  
   const navigation = useNavigate();
 
   const onInputChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    let updatedErrors = { ...error };
+
+    switch (name) {
+      case 'email':
+        updatedErrors.email = validEmailRegex.test(value) ? '' : 'Email is not valid!';
+        break;
+      case 'password':
+        updatedErrors.password = value.length < 8 ? 'Password must be at least 8 characters long!' : '';
+        break;
+      default:
+        break;
+    }
+
+    setError(updatedErrors);
+    if (name === 'email') {
+      setEmail(value);
+    } else if (name === 'password') {
+      setPassword(value);
+    }
   };
+
   useEffect(() =>{
     setToken(null)
   },[])
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    
     try {
-      const response = await axios.post('http://localhost:8080/login', user);
+      let body = {
+        email,
+        password
+      }
+      const response = await axios.post('http://localhost:8080/login', body);
       const token = response.data.token;
       setToken(token);
       navigation('/main');
@@ -28,9 +68,18 @@ function LoginPage() {
       setError('Invalid email or password!');
       console.error('Error logging in:', error);
     }
-  };
 
-  const { email, password } = user;
+    if (!email || !password) {
+      console.error('Please fill in all required fields');
+      return;
+    }
+    navigation('/main');
+    if (validateForm(error)) {
+      console.info('Valid Form');
+    } else {
+      console.error('Invalid Form');
+    }
+  };
 
   return (
     <div className='login'>
@@ -42,19 +91,18 @@ function LoginPage() {
               <input
                 type='text'
                 placeholder='email'
-                value={email}
                 name='email'
                 onChange={onInputChange}
               />
+              {error.email.length > 0 && <span className='error'>{error.email}</span>}
               <label htmlFor='password'>Password</label>
               <input
                 type='password'
                 placeholder='password'
                 name='password'
-                value={password}
                 onChange={onInputChange}
               />
-              {error && <p className='error'>{error}</p>}
+              {error.password.length > 0 && <span className='error'>{error.password}</span>}
               <button type='submit'>Login</button>
             </form>
             <p>

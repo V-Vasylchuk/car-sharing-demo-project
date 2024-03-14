@@ -11,7 +11,7 @@ function UserEditRole() {
 
   useEffect(() => {
     if (getToken() === null) {
-      navigation("/login")
+      navigation("/")
     }
   }, [getToken()]);
 
@@ -63,7 +63,7 @@ function UserEditRole() {
   }
 
 
-  const { firstName, email, lastName, password } = user;
+  const { firstName, email, lastName, password, role } = user;
 
 
   return (
@@ -92,6 +92,12 @@ function UserEditRole() {
                 EMAIL
               </label>
               <input type="text" value={email} name='email' onChange={e => onInputChange(e)} />
+            </div>
+            <div className='text_info'>
+              <label htmlFor="role">
+                ROLE
+              </label>
+              <input type="text" value={role} name='role' onChange={e => onInputChange(e)} />
             </div>
             <div className='text_info'>
               <label htmlFor="password">

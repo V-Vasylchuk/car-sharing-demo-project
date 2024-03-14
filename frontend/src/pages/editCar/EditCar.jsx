@@ -16,7 +16,7 @@ function EditCarForm() {
 
   useEffect(() => {
     if (getToken() === null) {
-        navigation("/login")
+        navigation("/")
     }
   },[getToken()]);
 
@@ -63,7 +63,7 @@ function EditCarForm() {
     e.preventDefault();
     let hasError = false;
     Object.values(car).forEach(value => {
-      if (value.trim().length < 1) {
+      if (typeof value === 'string' && value.trim().length < 1) {
         hasError = true;
       }
     });
@@ -114,18 +114,17 @@ function EditCarForm() {
       <div className='container_add'>
         <h1 className='container__title'>Edit Car</h1>
         <div className='wrapper_add'>
-          <img src='' alt='' className='img_bg' />
           <div className='form-wrapper'>
             <form onSubmit={e => onSubmit(e)} noValidate>
               <div className='model'>
                 <label htmlFor='model'>Model</label>
                 <input type='text' name='model' value={car.model} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} noValidate required />
-                {errors.model && <span className='error'>{car.model}</span>}
+                {errors.model && <span className='error'>{errors.model}</span>}
               </div>
               <div className='brand'>
                 <label htmlFor='brand'>Brand</label>
                 <input type='text' name='brand' value={car.brand} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} noValidate required />
-                {errors.brand && <span className='error'>{car.brand}</span>}
+                {errors.brand && <span className='error'>{errors.brand}</span>}
               </div>
               {/* <div className='photo'>
                 <label htmlFor='photo'>Add Photo</label>
@@ -149,10 +148,10 @@ function EditCarForm() {
               <div className='carType'>
                 <label htmlFor='carType'>Car Type</label>
                 <select name='carType' value={car.type} onChange={(e) => setCar({ ...car, type: e.target.value })} onKeyPress={handleKeyPress}>
-                  <option value='SEDAN'>Sedan</option>
+                  <option value='SEDAN'>SEDAN</option>
                   <option value='SUV'>SUV</option>
-                  <option value='HATCHBACK'>Hatchback</option>
-                  <option value='UNIVERSAL'>Universal</option>
+                  <option value='HATCHBACK'>HATCHBACK</option>
+                  <option value='UNIVERSAL'>UNIVERSAL</option>
                 </select>
               </div>
               <div className='submit'>

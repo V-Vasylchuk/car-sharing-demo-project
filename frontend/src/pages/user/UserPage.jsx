@@ -10,7 +10,7 @@ function UserPage() {
 
   useEffect(() => {
     if (getToken() === null) {
-        navigation("/login")
+        navigation("/")
     }
   },[getToken()]);
 

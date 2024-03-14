@@ -1,0 +1,119 @@
+.user-container {
+  position: relative;
+  border-radius: 20px;
+}
+
+.user-info-popup {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  border-radius: 10px;
+  background-color: rgba(152, 142, 142, 0.6);
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 1;
+  box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
+  min-width: 200px;
+}
+.user-info-popup .btn_info {
+  background-color: rgb(170, 156, 156);
+  border: 4px solid rgb(170, 156, 156);
+  padding: 5px;
+  display: block;
+  margin: 6px;
+  text-shadow: 1 1px black;
+  box-shadow: #383634;
+  text-align: center;
+}
+
+.user_info {
+  font-size: 23px;
+  padding: 10px;
+  width: 350px;
+}
+.user_info .bg_img {
+  position: absolute;
+  z-index: 0;
+  opacity: 0.3;
+}
+.user_info_text {
+  color: rgb(82, 17, 17);
+}
+.user_info::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+.user_info_container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 5px;
+  position: relative;
+  z-index: 1;
+}
+.user_info_wrapper {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+  border-radius: 5px;
+  font-size: 20px;
+}
+.user_info_wrapper .text_info {
+  color: black;
+  font-size: 20px;
+  margin: 0px 20px;
+}
+.user_info_wrapper .text_info input {
+  margin: 0px 20px;
+  background: none;
+  border-color: grey;
+  padding: 5px;
+}
+.user_info .button-52 {
+  font-size: 16px;
+  font-weight: 200;
+  letter-spacing: 1px;
+  padding: 13px 20px 13px;
+  outline: 0;
+  border: 1px solid black;
+  cursor: pointer;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0);
+  -moz-user-select: none;
+       user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.user_info .button-52:after {
+  content: "";
+  background-color: #474343;
+  width: 100%;
+  z-index: -1;
+  position: absolute;
+  height: 100%;
+  top: 7px;
+  left: 7px;
+  transition: 0.2s;
+}
+.user_info .button-52:hover:after {
+  top: 0px;
+  left: 0px;
+}
+@media (min-width: 768px) {
+  .user_info .button-52 {
+    padding: 13px 50px 13px;
+  }
+}
+
+@media (max-width: 898px) {
+  .user_info {
+    font-size: 13px;
+    padding: 6px;
+    width: 120px;
+  }
+}/*# sourceMappingURL=user.css.map */

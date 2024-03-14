@@ -77,7 +77,7 @@ function HeaderPages() {
               <NavLink to="/cars" activeclassname="active">LIST</NavLink>
             </li>
             <li className="option">
-              <NavLink to="/rentals" activeclassname="active" >MY RENTAL</NavLink>
+              <NavLink to="/myrentals" activeclassname="active" >MY RENTAL</NavLink>
             </li>
             <li className="option">
               <User />

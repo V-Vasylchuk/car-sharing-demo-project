@@ -12,6 +12,7 @@ import EditCarForm from "./pages/editCar/EditCar";
 import Payment from "./pages/payment/Payment";
 import { UserProvider } from "./pages/user/userContext";
 import UserEditRole from "./pages/user/UserEditRole";
+import MyRentals from "./pages/MyRentals/Rentals";
 
 
 
@@ -25,9 +26,10 @@ const App = () => {
         <Routes>
 
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage setLoggedIn={setIsLoggedIn} />} />
+          <Route path="/" element={<LoginPage setLoggedIn={setIsLoggedIn} />} />
           <Route path="/main" element={<MainPage />} />
           <Route path="/rentals" element={<Rentals />} />
+          <Route path="/myrentals" element={<MyRentals />} />
           <Route path="/user/me" element={<UserPage />} />
           <Route path="cars/add" element={<AddCar />} />
           <Route path="cars/edit/:id" element={<EditCarForm />} />

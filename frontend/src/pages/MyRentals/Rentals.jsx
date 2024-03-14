@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import HeaderPages from '../../components/header/HeaderPages';
 import './rentals.scss';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getBearerToken, getToken } from '../../config';
 import axios from 'axios';
 import { FcApproval } from "react-icons/fc";
 import { FcHighPriority } from "react-icons/fc";
+import { useUser } from '../user/userContext';
 
-function Rentals() {
-
+function MyRentals() {
   const [rentals, setRentals] = useState([]);
-  
-
+  const [userRentals, setUserRentals] = useState([]);
+  const {user} = useUser();
 
   const navigation = useNavigate();
 
@@ -20,9 +20,16 @@ function Rentals() {
       navigation("/")
     }
   }, [getToken()]);
+
   useEffect(() => {
     fetchData();
   }, []);
+  useEffect(() => {
+    if (user.id) {
+      const filteredRentals = rentals.filter(rental => rental.userId === user.id);
+      setUserRentals(filteredRentals);
+    }
+  }, [user, rentals]);
 
   const fetchData = async () => {
     try {
@@ -49,6 +56,8 @@ function Rentals() {
     return returnDate < currentDate;
   }
 
+
+
   return (
     <div className='rental'>
       <HeaderPages />
@@ -66,10 +75,10 @@ function Rentals() {
               </tr>
             </thead>
             <tbody>
-              {rentals.map(rental => (
+              {userRentals.map((rental, index) => (
                 <tr key={rental.id}>
-                  <th scope="row">{rental.id}</th>
-                  <td><Link to="/edit_user_role">{rental.userFirstName}</Link> </td>
+                  <th scope="row">{index + 1}</th>
+                  <td>{rental.userFirstName}</td>
                   <td>{rental.carBrand}</td>
                   <td>{rental.actualReturnDate.split('T')[0]}</td>
                   <td>{isActive(rental) ? <FcHighPriority /> : <FcApproval />}</td>
@@ -83,4 +92,4 @@ function Rentals() {
   )
 }
 
-export default Rentals
+export default MyRentals;

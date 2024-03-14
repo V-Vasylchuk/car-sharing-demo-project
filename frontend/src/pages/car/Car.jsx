@@ -42,7 +42,7 @@ const Car = () => {
 
   useEffect(() => {
     if (getToken() === null) {
-      navigation("/login")
+      navigation("/")
     }
   }, [getToken()]);
 
