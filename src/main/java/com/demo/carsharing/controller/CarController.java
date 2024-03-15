@@ -5,8 +5,6 @@ import com.demo.carsharing.dto.request.CarRequestDto;
 import com.demo.carsharing.dto.response.CarResponseDto;
 import com.demo.carsharing.model.Car;
 import com.demo.carsharing.service.CarService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -23,29 +21,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/cars")
 public class CarController {
     private final DtoMapper<Car, CarRequestDto, CarResponseDto> mapper;
-    private ObjectMapper objectMapper;
     private CarService carService;
 
     @PostMapping()
     @Operation(summary = "Create a new car")
-    public CarResponseDto create(@RequestPart(name = "car") @Valid String jsonCar,
+    public CarResponseDto create(@RequestPart(name = "car") @Valid CarRequestDto carRequestDto,
                                  @RequestPart(name = "file") MultipartFile file) {
-        Car car = null;
-        try {
-            ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path(String.valueOf(file)).toUriString();
-            car = objectMapper.readValue(jsonCar, Car.class);
-        } catch (JsonProcessingException exception) {
-            exception.printStackTrace();
-        }
-        return mapper.toDto(carService.createCar(car, file));
+        return mapper.toDto(carService.createCar(mapper.toModel(carRequestDto), file));
     }
 
     @GetMapping()
