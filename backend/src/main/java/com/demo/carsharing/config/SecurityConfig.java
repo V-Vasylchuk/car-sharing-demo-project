@@ -53,7 +53,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/cars/{id}").hasAnyRole(MANAGER, CUSTOMER)
                         .requestMatchers(HttpMethod.PUT, "/cars/{id}").hasRole(MANAGER)
                         .requestMatchers(HttpMethod.DELETE, "/cars/{id}").hasRole(MANAGER)
-                        .requestMatchers(HttpMethod.POST, "/rentals", "/rentals/{id}/return").hasAnyRole(MANAGER, CUSTOMER)
+                        .requestMatchers(HttpMethod.POST, "/rentals", "/rentals/{id}/return")
+                        .hasAnyRole(MANAGER, CUSTOMER)
                         .requestMatchers(HttpMethod.GET, "/rentals/{id}").hasAnyRole(MANAGER, CUSTOMER)
                         .requestMatchers(HttpMethod.GET, "/rentals").hasRole(MANAGER)
                         .requestMatchers(HttpMethod.POST, "/rentals").hasRole(MANAGER)
@@ -69,7 +70,8 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of("http://localhost:3000/", "http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "Origin"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control",
+                "Content-Type", "Origin"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

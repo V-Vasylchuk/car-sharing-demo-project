@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class RentalMapper implements DtoMapper<Rental, RentalRequestDto, RentalResponseDto> {
     private final CarService carService;
     private final UserService userService;
+
     @Override
     public Rental toModel(RentalRequestDto requestDto) {
         return new Rental()

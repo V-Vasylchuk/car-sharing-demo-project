@@ -23,7 +23,6 @@ public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private LocalDateTime rentalDate;
     private LocalDateTime returnDate;
     private LocalDateTime actualReturnDate;
