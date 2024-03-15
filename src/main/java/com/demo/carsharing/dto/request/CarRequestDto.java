@@ -35,4 +35,7 @@ public class CarRequestDto {
     @NotNull
     @Positive
     private BigDecimal dailyFee;
+    private String bucketName;
+    private String keyName;
+    private String presignedUrl;
 }
