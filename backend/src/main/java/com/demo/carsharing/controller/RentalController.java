@@ -40,7 +40,7 @@ public class RentalController {
         return rentalResponseDto;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(summary = "Get all rentals")
     public List<RentalResponseDto> getAllRentals() {
         return rentalService.findAll()
