@@ -41,6 +41,15 @@ public class RentalController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all rentals")
+    public List<RentalResponseDto> getAllRentals() {
+        return rentalService.findAll()
+                .stream()
+                .map(rentalMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping
     @Operation(summary = "Get all rentals by userId and status")
     public List<RentalResponseDto> getByUserAndActive(
             @RequestParam("user_id")

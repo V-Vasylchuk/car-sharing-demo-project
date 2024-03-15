@@ -11,6 +11,8 @@ public interface RentalService {
 
     void delete(Long id);
 
+    List<Rental> findAll();
+
     List<Rental> findAllByUserId(Long userId, PageRequest pageRequest);
 
     void updateActualReturnDate(Long id);

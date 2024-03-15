@@ -33,6 +33,11 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
+    public List<Rental> findAll() {
+        return rentalRepository.findAll();
+    }
+
+    @Override
     public List<Rental> findAllByUserId(Long userId, PageRequest pageRequest) {
         return rentalRepository.findAllByUserId(userId, pageRequest);
     }
