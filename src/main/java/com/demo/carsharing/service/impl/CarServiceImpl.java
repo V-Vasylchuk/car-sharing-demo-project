@@ -6,9 +6,7 @@ import com.demo.carsharing.model.Car;
 import com.demo.carsharing.repository.CarRepository;
 import com.demo.carsharing.service.AwsS3Service;
 import com.demo.carsharing.service.CarService;
-
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +18,6 @@ public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
     private final AwsS3Service awsS3Service;
     private final AwsClientS3Config clientS3Config;
-
 
     @Override
     @Transactional
@@ -34,7 +31,8 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<Car> findAll() {
         List<Car> carList = carRepository.findAll();
-        carList.forEach(car -> car.setImageUrl(awsS3Service.getUrl(car.getBucketName(), car.getKeyName())));
+        carList.forEach(car ->
+                car.setImageUrl(awsS3Service.getUrl(car.getBucketName(), car.getKeyName())));
         return carList;
     }
 

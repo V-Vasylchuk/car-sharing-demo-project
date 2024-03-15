@@ -5,6 +5,13 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.demo.carsharing.config.AwsClientS3Config;
 import com.demo.carsharing.service.AwsS3Service;
 import com.demo.carsharing.util.Constants;
+import java.io.File;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.time.Duration;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,14 +21,6 @@ import software.amazon.awssdk.services.s3.model.S3Exception;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.time.Duration;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
