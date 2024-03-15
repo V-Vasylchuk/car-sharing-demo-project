@@ -5,6 +5,7 @@ import com.demo.carsharing.dto.request.RentalRequestDto;
 import com.demo.carsharing.dto.response.RentalResponseDto;
 import com.demo.carsharing.model.Rental;
 import com.demo.carsharing.service.CarService;
+import com.demo.carsharing.service.NotificationService;
 import com.demo.carsharing.service.RentalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/rentals")
 public class RentalController {
     private final DtoMapper<Rental, RentalRequestDto, RentalResponseDto> rentalMapper;
+    private final NotificationService telegramService;
     private final RentalService rentalService;
     private final CarService carService;
 
@@ -37,6 +39,7 @@ public class RentalController {
                         .save(rentalMapper
                                 .toModel(rentalRequestDto)));
         carService.decreaseInventory(rentalResponseDto.getCarId(), 1); // One car for testing
+        telegramService.sendMessageAboutNewRental(rentalResponseDto);
         return rentalResponseDto;
     }
 
