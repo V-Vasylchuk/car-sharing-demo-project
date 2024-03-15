@@ -20,6 +20,12 @@ security:
       secret-key: secret
       expire-length: 3600000
 
+aws:
+  accessKey: your own iam user access key
+  secretAccessKey: your own iam user secret access key
+  bucketName: your own s3 bucket, for example - demo-car-sharing-bucket
+  region: region of your bucket, for example - eu-central-1
+
 
 stripe:
   secretKey: sk_test_51OqdzLLtNAIxFHF1ggIuO1cmTyjUDRUpJ7Vvajar9pkhpdYDYPCG4Pb9dH4JiX33WmRSf6g9zROzdC1pikuYZBtG00bIcBO9vm

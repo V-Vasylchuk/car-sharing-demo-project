@@ -2,9 +2,10 @@ package com.demo.carsharing.service;
 
 import com.demo.carsharing.model.Car;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface CarService {
-    Car createCar(Car car);
+    Car createCar(Car car, MultipartFile file);
 
     List<Car> findAll();
 
