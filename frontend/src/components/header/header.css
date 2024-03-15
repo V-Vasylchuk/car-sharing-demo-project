@@ -1,0 +1,107 @@
+.header__wrapper {
+  background: rgb(0, 0, 4);
+  background: linear-gradient(180deg, rgb(0, 0, 4) 0%, rgb(90, 90, 93) 35%, rgb(245, 245, 245) 100%);
+  font-size: 50px;
+  display: flex;
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 90px;
+  z-index: 1;
+  position: relative;
+}
+.header__wrapper .nav-options {
+  display: flex;
+  font-size: 20px;
+  margin-left: 30px;
+  list-style-type: none;
+}
+.header__wrapper .nav-options .option {
+  padding: 20px;
+}
+.header__wrapper .nav-options .option .img_user {
+  width: 30px;
+}
+.header__wrapper .close-menu {
+  font-size: 20px;
+  position: absolute;
+  right: 40px;
+  background: none;
+  border: none;
+}
+.header__wrapper .btn__main {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  font-size: 15px;
+}
+.header__wrapper .btn__main .logo {
+  padding: 5px 0;
+  font-family: "Oswald", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 50px;
+  text-shadow: 5px 0px black;
+}
+.header__wrapper .exit {
+  font-family: "Poppins", sans-serif;
+  font-size: 25px;
+  padding: 0 30px;
+}
+.header__wrapper a {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  font-weight: 900;
+}
+.header__wrapper .active {
+  color: blue;
+}
+@media (max-width: 800px) {
+  .header__wrapper .nav__wrapper {
+    display: none;
+  }
+  .header__wrapper .nav-options {
+    font-size: 10px;
+    display: flex;
+    margin-right: 40px;
+    padding: 5px;
+  }
+  .header__wrapper .nav-options .option {
+    padding: 10px;
+  }
+  .header__wrapper .menu-icon {
+    display: block;
+    cursor: pointer;
+    border: none;
+    background: none;
+    margin: 10px 20px;
+  }
+  .header__wrapper .menu-icon.active + .nav__wrapper {
+    display: block;
+  }
+  .header__wrapper .menu-icon.active {
+    display: none;
+  }
+  .header__wrapper .close-menu.active {
+    display: block;
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+  }
+}
+@media (min-width: 801px) {
+  .header__wrapper .menu-icon {
+    display: none;
+  }
+  .header__wrapper .close-menu {
+    display: none;
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+  }
+}/*# sourceMappingURL=header.css.map */

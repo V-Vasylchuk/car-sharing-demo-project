@@ -1,0 +1,73 @@
+.rental{
+  position: relative;
+  padding: 20px;
+  background-image: url(https://go.trader.ca/wp-content/uploads/2017/08/web-from-background-car.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  background-position: center;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: -1;
+  }
+
+  &_container{
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 5px; 
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.5); 
+    z-index: 0;
+    
+  }
+  &_wrapper{
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 20px;
+  }
+  
+
+  table {
+    border-radius: 0.25em;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th {
+    border-bottom: 1px solid #364043;
+    color: #e24242;
+    font-size: 30px;
+    font-weight: 600;
+    padding: 0.5em 1em;
+    text-align: left;
+  }
+  td {
+    color: #fff;
+    font-weight: 400;
+    padding: 0.65em 1em;
+  }
+  .disabled td {
+    color: #4F5F64;
+  }
+  
+  tbody tr:hover {
+    background: #555a5c;
+  }
+  @media (min-height: 400px) {
+    height: 100vh;
+  }
+
+  @media (max-height: 400px) {
+    height: 100%;
+  }
+}
+
