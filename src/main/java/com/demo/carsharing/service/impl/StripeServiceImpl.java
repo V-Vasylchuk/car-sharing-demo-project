@@ -1,37 +1,43 @@
 package com.demo.carsharing.service.impl;
 
-import com.demo.carsharing.dto.stripe.CapturePaymentResponseDto;
-import com.demo.carsharing.dto.stripe.CreatePaymentRequestDto;
-import com.demo.carsharing.dto.stripe.CreatePaymentResponseDto;
-import com.demo.carsharing.dto.stripe.StripeResponseDto;
+import com.demo.carsharing.dto.mapper.PaymentMapper;
+import com.demo.carsharing.dto.request.PaymentRequestDto;
+import com.demo.carsharing.dto.response.CapturePaymentResponseDto;
+import com.demo.carsharing.dto.response.PaymentResponseDto;
+import com.demo.carsharing.dto.response.StripeResponseDto;
+import com.demo.carsharing.repository.PaymentRepository;
 import com.demo.carsharing.service.StripeService;
 import com.demo.carsharing.util.Constants;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-
+@RequiredArgsConstructor
 public class StripeServiceImpl implements StripeService {
+
+    private final PaymentRepository paymentRepository;
+    private final PaymentMapper paymentMapper;
 
     @Value("${stripe.secretKey}")
     private String secretKey;
 
     @Override
-    public StripeResponseDto<CreatePaymentResponseDto> createPayment(
-            CreatePaymentRequestDto paymentRequest) {
+    public StripeResponseDto<PaymentResponseDto> createPayment(
+            PaymentRequestDto paymentRequestDto) {
         Stripe.apiKey = secretKey;
         SessionCreateParams.LineItem.PriceData.ProductData productData =
-                createProductData(paymentRequest);
+                createProductData(paymentRequestDto);
         SessionCreateParams.LineItem.PriceData priceData =
-                createPriceData(paymentRequest, productData);
-        SessionCreateParams.LineItem lineItem = createLineItem(paymentRequest, priceData);
-        SessionCreateParams params = createParams(paymentRequest, lineItem);
+                createPriceData(paymentRequestDto, productData);
+        SessionCreateParams.LineItem lineItem = createLineItem(paymentRequestDto, priceData);
+        SessionCreateParams params = createParams(paymentRequestDto, lineItem);
         Session session;
         try {
             session = Session.create(params);
@@ -39,8 +45,9 @@ public class StripeServiceImpl implements StripeService {
             exception.printStackTrace();
             return createFailedPaymentResponse();
         }
-        CreatePaymentResponseDto responseData = createPaymentResponseData(session);
-        return createSuccessPaymentResponse(responseData);
+        PaymentResponseDto responseDataDto = createPaymentResponseData(session);
+        paymentRepository.save(paymentMapper.toModel(paymentRequestDto));
+        return createSuccessPaymentResponse(responseDataDto);
     }
 
     @Override
@@ -61,8 +68,8 @@ public class StripeServiceImpl implements StripeService {
         }
     }
 
-    private CreatePaymentResponseDto createPaymentResponseData(Session session) {
-        return new CreatePaymentResponseDto()
+    private PaymentResponseDto createPaymentResponseData(Session session) {
+        return new PaymentResponseDto()
                 .setSessionId(session.getId())
                 .setSessionUrl(session.getUrl());
     }
@@ -76,53 +83,53 @@ public class StripeServiceImpl implements StripeService {
     }
 
     private SessionCreateParams.LineItem.PriceData.ProductData createProductData(
-            CreatePaymentRequestDto paymentRequest) {
+            PaymentRequestDto paymentRequestDto) {
         return SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                .setName(paymentRequest.getName())
+                .setName(paymentRequestDto.getName())
                 .build();
     }
 
     private SessionCreateParams.LineItem.PriceData createPriceData(
-            CreatePaymentRequestDto createPaymentRequest,
+            PaymentRequestDto paymentRequestDto,
             SessionCreateParams.LineItem.PriceData.ProductData productData) {
         return SessionCreateParams.LineItem.PriceData.builder()
-                .setCurrency(createPaymentRequest.getCurrency())
-                .setUnitAmount(createPaymentRequest.getAmount())
+                .setCurrency(paymentRequestDto.getCurrency())
+                .setUnitAmount(paymentRequestDto.getAmount())
                 .setProductData(productData)
                 .build();
     }
 
     private SessionCreateParams.LineItem createLineItem(
-            CreatePaymentRequestDto paymentRequest,
+            PaymentRequestDto paymentRequestDto,
             SessionCreateParams.LineItem.PriceData priceData) {
         return SessionCreateParams.LineItem
                 .builder()
-                .setQuantity(paymentRequest.getQuantity())
+                .setQuantity(paymentRequestDto.getQuantity())
                 .setPriceData(priceData)
                 .build();
     }
 
-    private SessionCreateParams createParams(CreatePaymentRequestDto createPaymentRequest,
+    private SessionCreateParams createParams(PaymentRequestDto paymentRequestDto,
                                              SessionCreateParams.LineItem lineItem) {
         return SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl(createPaymentRequest.getSuccessUrl())
-                .setCancelUrl(createPaymentRequest.getCancelUrl())
+                .setSuccessUrl(paymentRequestDto.getSuccessUrl())
+                .setCancelUrl(paymentRequestDto.getCancelUrl())
                 .addLineItem(lineItem)
                 .build();
     }
 
-    private StripeResponseDto<CreatePaymentResponseDto> createSuccessPaymentResponse(
-            CreatePaymentResponseDto responseData) {
-        return new StripeResponseDto<CreatePaymentResponseDto>()
+    private StripeResponseDto<PaymentResponseDto> createSuccessPaymentResponse(
+            PaymentResponseDto responseData) {
+        return new StripeResponseDto<PaymentResponseDto>()
                 .setStatus(Constants.SUCCESS)
                 .setMessage(Constants.SUCCESSFULLY_CREATION_MESSAGE)
                 .setHttpStatus(Constants.HTTP_STATUS_OK)
                 .setData(responseData);
     }
 
-    private StripeResponseDto<CreatePaymentResponseDto> createFailedPaymentResponse() {
-        return new StripeResponseDto<CreatePaymentResponseDto>()
+    private StripeResponseDto<PaymentResponseDto> createFailedPaymentResponse() {
+        return new StripeResponseDto<PaymentResponseDto>()
                 .setStatus(Constants.FAILURE)
                 .setMessage(Constants.FAILED_CREATION_MESSAGE)
                 .setHttpStatus(Constants.HTTP_STATUS_BAD_REQUEST)

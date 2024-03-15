@@ -1,4 +1,4 @@
-package com.demo.carsharing.dto.stripe;
+package com.demo.carsharing.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class CreatePaymentRequestDto {
+public class PaymentRequestDto {
 
     private Long amount;
     private Long quantity;

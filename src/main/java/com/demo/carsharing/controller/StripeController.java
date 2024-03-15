@@ -1,9 +1,9 @@
 package com.demo.carsharing.controller;
 
-import com.demo.carsharing.dto.stripe.CapturePaymentResponseDto;
-import com.demo.carsharing.dto.stripe.CreatePaymentRequestDto;
-import com.demo.carsharing.dto.stripe.CreatePaymentResponseDto;
-import com.demo.carsharing.dto.stripe.StripeResponseDto;
+import com.demo.carsharing.dto.request.PaymentRequestDto;
+import com.demo.carsharing.dto.response.CapturePaymentResponseDto;
+import com.demo.carsharing.dto.response.PaymentResponseDto;
+import com.demo.carsharing.dto.response.StripeResponseDto;
 import com.demo.carsharing.service.StripeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +22,9 @@ public class StripeController {
     private final StripeService stripeService;
 
     @PostMapping("/create-payment")
-    public ResponseEntity<StripeResponseDto<CreatePaymentResponseDto>> createPayment(
-            @RequestBody CreatePaymentRequestDto createPaymentRequest) {
-        StripeResponseDto<CreatePaymentResponseDto> stripeResponse =
+    public ResponseEntity<StripeResponseDto<PaymentResponseDto>> createPayment(
+            @RequestBody PaymentRequestDto createPaymentRequest) {
+        StripeResponseDto<PaymentResponseDto> stripeResponse =
                 stripeService.createPayment(createPaymentRequest);
         return ResponseEntity
                 .status(stripeResponse.getHttpStatus())
