@@ -1,10 +1,11 @@
 package com.demo.carsharing.service.impl;
 
-import com.demo.carsharing.dto.mapper.PaymentMapper;
+import com.demo.carsharing.dto.mapper.DtoMapper;
 import com.demo.carsharing.dto.request.PaymentRequestDto;
 import com.demo.carsharing.dto.response.CapturePaymentResponseDto;
 import com.demo.carsharing.dto.response.PaymentResponseDto;
 import com.demo.carsharing.dto.response.StripeResponseDto;
+import com.demo.carsharing.model.Payment;
 import com.demo.carsharing.repository.PaymentRepository;
 import com.demo.carsharing.service.StripeService;
 import com.demo.carsharing.util.Constants;
@@ -12,6 +13,8 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +26,7 @@ import org.springframework.stereotype.Service;
 public class StripeServiceImpl implements StripeService {
 
     private final PaymentRepository paymentRepository;
-    private final PaymentMapper paymentMapper;
+    private final DtoMapper<Payment, PaymentRequestDto, PaymentResponseDto> mapper;
 
     @Value("${stripe.secretKey}")
     private String secretKey;
@@ -46,7 +49,7 @@ public class StripeServiceImpl implements StripeService {
             return createFailedPaymentResponse();
         }
         PaymentResponseDto responseDataDto = createPaymentResponseData(session);
-        paymentRepository.save(paymentMapper.toModel(paymentRequestDto));
+        paymentRepository.save(mapper.toModel(paymentRequestDto));
         return createSuccessPaymentResponse(responseDataDto);
     }
 
@@ -66,6 +69,28 @@ public class StripeServiceImpl implements StripeService {
             exception.printStackTrace();
             return createFailedCapturePaymentResponse();
         }
+    }
+
+    @Override
+    public PaymentResponseDto getById(long id) {
+        log.debug("Try get Payment by id {} from DB", id);
+        Payment payment = paymentRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Payment not found with ID " + id));
+        log.debug("Payment by id {} was successfully from DB", id);
+        return mapper.toDto(payment);
+    }
+
+    @Override
+    public List<PaymentResponseDto> getAll() {
+        log.debug("Try get all Payments from DB");
+        List<Payment> paymentList = paymentRepository.findAll();
+        if (paymentList.isEmpty()) {
+            throw new EntityNotFoundException("Payments not fount!");
+        }
+        log.debug("All Payments was successfully got from DB");
+        return paymentList.stream()
+                .map(mapper::toDto)
+                .toList();
     }
 
     private PaymentResponseDto createPaymentResponseData(Session session) {
