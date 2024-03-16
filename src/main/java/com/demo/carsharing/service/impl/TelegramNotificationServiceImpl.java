@@ -100,7 +100,7 @@ public class TelegramNotificationServiceImpl extends TelegramLongPollingBot
         return matcher.matches();
     }
 
-    @Scheduled(cron = "0 9 * * *")  // Every day at 9 p.m
+    @Scheduled(cron = "0 9 * * *") // Every day at 9 p.m
     public void notifyAllUsersWhereActualReturnDateIsAfterReturnDate() {
         List<Rental> rentals = rentalService.findAllByActualReturnDateAfterReturnDate();
         int rentalQuantity = rentals.size();
