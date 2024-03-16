@@ -10,6 +10,7 @@ public class CarMapper implements DtoMapper<Car, CarRequestDto, CarResponseDto> 
     @Override
     public Car toModel(CarRequestDto requestDto) {
         return new Car()
+                .setId(requestDto.getId())
                 .setModel(requestDto.getModel())
                 .setBrand(requestDto.getBrand())
                 .setType(requestDto.getType())
@@ -31,6 +32,6 @@ public class CarMapper implements DtoMapper<Car, CarRequestDto, CarResponseDto> 
                 .setDailyFee(model.getDailyFee())
                 .setBucketName(model.getBucketName())
                 .setKeyName(model.getKeyName())
-                .setPresignedUrl(model.getImageUrl());
+                .setPresignedUrl(model.getPresignedUrl());
     }
 }

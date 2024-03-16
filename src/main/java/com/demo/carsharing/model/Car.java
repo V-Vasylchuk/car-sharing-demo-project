@@ -27,7 +27,6 @@ public class Car {
     private Type type;
     private Integer inventory;
     private BigDecimal dailyFee;
-    private String imageUrl;
     private boolean deleted;
     private String bucketName;
     private String keyName;
