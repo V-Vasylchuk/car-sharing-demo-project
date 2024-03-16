@@ -1,19 +1,19 @@
 package com.demo.carsharing.service;
 
-import com.demo.carsharing.model.User;
+import com.demo.carsharing.dto.request.UserRequestDto;
+import com.demo.carsharing.dto.response.UserResponseDto;
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
-    User save(User user);
+    UserResponseDto save(UserRequestDto userRequestDto);
 
-    User findById(Long id);
+    UserResponseDto findById(Long id);
 
-    Optional<User> findByEmail(String email);
+    UserResponseDto findByEmail(String email);
 
     void delete(Long id);
 
-    List<User> findAll();
+    List<UserResponseDto> findAll();
 
-    User update(User user);
+    UserResponseDto update(UserRequestDto userRequestDto);
 }

@@ -1,11 +1,9 @@
 package com.demo.carsharing.controller;
 
-import com.demo.carsharing.dto.mapper.UserMapper;
 import com.demo.carsharing.dto.request.LoginRequestDto;
 import com.demo.carsharing.dto.request.UserRequestDto;
 import com.demo.carsharing.dto.response.UserResponseDto;
 import com.demo.carsharing.exception.AuthenticationException;
-import com.demo.carsharing.model.User;
 import com.demo.carsharing.security.AuthenticationService;
 import com.demo.carsharing.security.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,25 +24,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
-    private final UserMapper userMapper;
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Registration of a new user (default role a CUSTOMER)")
     public UserResponseDto register(@RequestBody @Valid UserRequestDto userRequestDto) {
-        return userMapper.toDto(authenticationService.register(userRequestDto));
+        return authenticationService.register(userRequestDto);
     }
 
     @PostMapping("/login")
     @Operation(summary = "Get a JWT token for registration user")
     public ResponseEntity<Object> login(@RequestBody @Valid LoginRequestDto loginRequestDto) {
-        User user;
+        UserResponseDto userResponseDto;
         try {
-            user = authenticationService
+            userResponseDto = authenticationService
                     .login(loginRequestDto.getEmail(), loginRequestDto.getPassword());
             String token = jwtTokenProvider
-                    .createToken(user.getEmail(), List.of(user.getRole().name()));
+                    .createToken(userResponseDto.getEmail(),
+                            List.of(userResponseDto.getRole().name()));
             Map<String, Object> body = new LinkedHashMap<>();
             body.put("timestamp", LocalDateTime.now().toString());
             body.put("token", token);
