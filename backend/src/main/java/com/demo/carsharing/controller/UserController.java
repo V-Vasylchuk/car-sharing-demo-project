@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -28,35 +30,47 @@ public class UserController {
     @GetMapping("/{id}")
     @Operation(summary = "Get user by id")
     public UserResponseDto getById(@PathVariable Long id) {
-        return userService.findById(id);
+        log.debug("Try get User by id {}", id);
+        UserResponseDto userResponseDto = userService.findById(id);
+        log.debug("User by id {} was successfully got", id);
+        return userResponseDto;
     }
 
     @GetMapping("/me")
     @Operation(summary = "Get my profile info by token")
     public UserResponseDto get(Authentication authentication) {
-        return userService.findByEmail(authentication.getName());
+        log.debug("Try get User by email {}", authentication.getName());
+        UserResponseDto userResponseDto = userService.findByEmail(authentication.getName());
+        log.debug("User was successfully got by email {}", authentication.getName());
+        return userResponseDto;
     }
 
     @PutMapping("/me")
     @Operation(summary = "Update profile info by token")
     public UserResponseDto update(Authentication authentication,
                                   @RequestBody @Valid UserRequestDto userRequestDto) {
+        log.debug("Try update User by token");
         Long userId = userService.findByEmail(authentication.getName()).getId();
         userRequestDto.setId(userId);
         userRequestDto.setRole(userService.findById(userId).getRole());
         userRequestDto.setPassword(authenticationService.encodePassword(
                 userRequestDto.getPassword()));
-        return userService.update(userRequestDto);
+        UserResponseDto userResponseDto = userService.update(userRequestDto);
+        log.debug("User was successfully updated by token");
+        return userResponseDto;
     }
 
     @PutMapping("/{id}/role")
     @Operation(summary = "Update user role")
     public UserResponseDto updateRole(@PathVariable Long id, @RequestParam("role") String role) {
+        log.debug("Try update User Role");
         try {
             UserRequestDto userRequestDto = new UserRequestDto();
             userRequestDto.setId(id);
             userRequestDto.setRole(User.Role.valueOf(role));
-            return userService.update(userRequestDto);
+            UserResponseDto userResponseDto = userService.update(userRequestDto);
+            log.debug("User Role was successfully updated");
+            return userResponseDto;
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(String.format("Invalid user role '%s'. Used only '%s'.",
                     role, Arrays.toString(User.Role.values())));

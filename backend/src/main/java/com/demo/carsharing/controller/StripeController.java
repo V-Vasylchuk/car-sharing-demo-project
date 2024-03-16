@@ -29,8 +29,10 @@ public class StripeController {
     @PostMapping("/create")
     public ResponseEntity<StripeResponseDto<PaymentResponseDto>> createPayment(
             @RequestBody PaymentRequestDto createPaymentRequest) {
+        log.debug("Try create Payment");
         StripeResponseDto<PaymentResponseDto> stripeResponse =
                 stripeService.createPayment(createPaymentRequest);
+        log.debug("Payment was successfully created");
         return ResponseEntity
                 .status(stripeResponse.getHttpStatus())
                 .body(stripeResponse);
@@ -39,8 +41,10 @@ public class StripeController {
     @GetMapping("/capture")
     public ResponseEntity<StripeResponseDto<CapturePaymentResponseDto>> capturePayment(
             @RequestParam String sessionId) {
+        log.debug("Try capture Payment by sessionId {}", sessionId);
         StripeResponseDto<CapturePaymentResponseDto> stripeResponse =
                 stripeService.capturePayment(sessionId);
+        log.debug("Payment by sessionId {} was successfully captured", sessionId);
         return ResponseEntity
                 .status(stripeResponse.getHttpStatus())
                 .body(stripeResponse);
@@ -48,17 +52,17 @@ public class StripeController {
 
     @GetMapping("/{id}")
     public PaymentResponseDto getById(@PathVariable(Constants.ENTITY_ID) int id) {
-        log.debug("Try get PaymentResponseDto by id {}", id);
+        log.debug("Try get Payment id {}", id);
         PaymentResponseDto paymentResponseDto = stripeService.getById(id);
-        log.debug("PaymentResponseDto by id {} was successfully got", id);
+        log.debug("Payment by id {} was successfully got", id);
         return paymentResponseDto;
     }
 
     @GetMapping
     public List<PaymentResponseDto> getAll() {
-        log.debug("Try get all PaymentResponseDto");
+        log.debug("Try get all Payment");
         List<PaymentResponseDto> paymentResponseDtoList = stripeService.getAll();
-        log.debug("All PaymentResponseDto was successfully got");
+        log.debug("All Payment was successfully got");
         return paymentResponseDtoList;
     }
 }
