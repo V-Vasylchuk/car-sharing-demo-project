@@ -1,6 +1,9 @@
 package com.demo.carsharing.service.impl;
 
 import com.demo.carsharing.config.AwsClientS3Config;
+import com.demo.carsharing.dto.mapper.DtoMapper;
+import com.demo.carsharing.dto.request.CarRequestDto;
+import com.demo.carsharing.dto.response.CarResponseDto;
 import com.demo.carsharing.exception.DataProcessingException;
 import com.demo.carsharing.model.Car;
 import com.demo.carsharing.repository.CarRepository;
@@ -18,37 +21,45 @@ public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
     private final AwsS3Service awsS3Service;
     private final AwsClientS3Config clientS3Config;
+    private final DtoMapper<Car, CarRequestDto, CarResponseDto> mapper;
 
     @Override
     @Transactional
-    public Car createCar(Car car, MultipartFile file) {
+    public CarResponseDto createCar(CarRequestDto carRequestDto, MultipartFile file) {
+        Car car = mapper.toModel(carRequestDto);
         String fileName = awsS3Service.upload(file);
         car.setBucketName(clientS3Config.getBucketName());
         car.setKeyName(fileName);
-        return carRepository.save(car);
+        carRepository.save(car);
+        return mapper.toDto(car);
     }
 
     @Override
-    public List<Car> findAll() {
+    public List<CarResponseDto> findAll() {
         List<Car> carList = carRepository.findAll();
         carList.forEach(car ->
-                car.setImageUrl(awsS3Service.getUrl(car.getBucketName(), car.getKeyName())));
-        return carList;
+                car.setPresignedUrl(awsS3Service.getUrl(car.getBucketName(), car.getKeyName())));
+        return carList.stream()
+                .map(mapper::toDto)
+                .toList();
     }
 
     @Override
-    public Car findById(Long id) {
+    public CarResponseDto findById(Long id) {
         Car car = carRepository.getReferenceById(id);
         car.setPresignedUrl(awsS3Service.getUrl(car.getBucketName(), car.getKeyName()));
-        return car;
+        return mapper.toDto(car);
     }
 
     @Override
     @Transactional
-    public Car update(Car car) {
-        carRepository.findById(car.getId()).orElseThrow(() ->
-                new DataProcessingException("Can't find car with id: " + car.getId()));
-        return carRepository.saveAndFlush(car);
+    public CarResponseDto update(CarRequestDto carRequestDto) {
+        Car car = mapper.toModel(carRequestDto);
+        car = carRepository.findById(car.getId()).orElseThrow(() ->
+                new DataProcessingException("Can't find carRequestDto with id: "
+                        + carRequestDto.getId()));
+        carRepository.saveAndFlush(car);
+        return mapper.toDto(car);
     }
 
     @Override
@@ -60,10 +71,10 @@ public class CarServiceImpl implements CarService {
     @Override
     @Transactional
     public void decreaseInventory(Long carId, int number) {
-        Car car = findById(carId);
+        Car car = carRepository.getReferenceById(carId);
         if (car.getInventory() > 0) {
             car.setInventory(car.getInventory() - number);
-            update(car);
+            carRepository.saveAndFlush(car);
         } else {
             throw new RuntimeException("No car available ");
         }
@@ -72,8 +83,8 @@ public class CarServiceImpl implements CarService {
     @Override
     @Transactional
     public void increaseInventory(Long carId, int number) {
-        Car car = findById(carId);
+        Car car = carRepository.getReferenceById(carId);
         car.setInventory(car.getInventory() + number);
-        update(car);
+        carRepository.saveAndFlush(car);
     }
 }

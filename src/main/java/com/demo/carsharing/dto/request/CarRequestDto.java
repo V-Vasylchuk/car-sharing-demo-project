@@ -17,6 +17,7 @@ import lombok.Setter;
 public class CarRequestDto {
     private static final String NOT_EMPTY_MESSAGE = "Field can`t be empty!";
 
+    private Long id;
     @Schema(example = "Toyota")
     @NotEmpty(message = NOT_EMPTY_MESSAGE)
     private String brand;

@@ -10,10 +10,12 @@ public class UserMapper implements DtoMapper<User, UserRequestDto, UserResponseD
     @Override
     public User toModel(UserRequestDto requestDto) {
         return new User()
+                .setId(requestDto.getId())
                 .setFirstName(requestDto.getFirstName())
                 .setLastName(requestDto.getLastName())
                 .setEmail(requestDto.getEmail())
-                .setPassword(requestDto.getPassword());
+                .setPassword(requestDto.getPassword())
+                .setRole(requestDto.getRole());
     }
 
     @Override
@@ -23,6 +25,7 @@ public class UserMapper implements DtoMapper<User, UserRequestDto, UserResponseD
                 .setEmail(user.getEmail())
                 .setFirstName(user.getFirstName())
                 .setLastName(user.getLastName())
-                .setRole(user.getRole());
+                .setRole(user.getRole())
+                .setPassword(user.getPassword());
     }
 }

@@ -1,17 +1,18 @@
 package com.demo.carsharing.service;
 
-import com.demo.carsharing.model.Car;
+import com.demo.carsharing.dto.request.CarRequestDto;
+import com.demo.carsharing.dto.response.CarResponseDto;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface CarService {
-    Car createCar(Car car, MultipartFile file);
+    CarResponseDto createCar(CarRequestDto carRequestDto, MultipartFile file);
 
-    List<Car> findAll();
+    List<CarResponseDto> findAll();
 
-    Car findById(Long id);
+    CarResponseDto findById(Long id);
 
-    Car update(Car car);
+    CarResponseDto update(CarRequestDto carRequestDto);
 
     void deleteById(Long id);
 
