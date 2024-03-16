@@ -1,4 +1,4 @@
 .idea/*
+.mvn/*
 *.iml
 target/*
-

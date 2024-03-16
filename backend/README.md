@@ -14,7 +14,7 @@ Local build:
 
 Docker:
 * Ensure Docker is installed and running
-* Set your credentials in [.env](.env) file
+* Set your credentials in [.env](../.env) file
 * Build the project using the command: `mvn clean package`
 * Run the command: `docker-compose up`
 * Visit [Swagger page](http://localhost:8080/swagger-ui/index.htm) for easy testing.

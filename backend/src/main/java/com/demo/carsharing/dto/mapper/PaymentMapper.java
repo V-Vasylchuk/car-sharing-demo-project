@@ -3,7 +3,9 @@ package com.demo.carsharing.dto.mapper;
 import com.demo.carsharing.dto.request.PaymentRequestDto;
 import com.demo.carsharing.dto.response.PaymentResponseDto;
 import com.demo.carsharing.model.Payment;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PaymentMapper implements DtoMapper<Payment, PaymentRequestDto, PaymentResponseDto> {
     @Override
     public Payment toModel(PaymentRequestDto requestDto) {

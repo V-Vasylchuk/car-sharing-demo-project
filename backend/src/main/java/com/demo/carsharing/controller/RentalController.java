@@ -3,7 +3,6 @@ package com.demo.carsharing.controller;
 import com.demo.carsharing.dto.request.RentalRequestDto;
 import com.demo.carsharing.dto.response.RentalResponseDto;
 import com.demo.carsharing.service.CarService;
-import com.demo.carsharing.service.NotificationService;
 import com.demo.carsharing.service.RentalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
