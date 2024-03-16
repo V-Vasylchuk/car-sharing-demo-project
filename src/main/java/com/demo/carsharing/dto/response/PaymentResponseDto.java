@@ -1,4 +1,4 @@
-package com.demo.carsharing.dto.stripe;
+package com.demo.carsharing.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +11,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class StripeResponseDto<T> {
-
-    private String status;
-    private String message;
-    private Integer httpStatus;
-    private T data;
+public class PaymentResponseDto {
+    private String sessionId;
+    private String sessionUrl;
 }

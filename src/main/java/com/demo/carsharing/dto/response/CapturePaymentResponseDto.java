@@ -1,4 +1,4 @@
-package com.demo.carsharing.dto.stripe;
+package com.demo.carsharing.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

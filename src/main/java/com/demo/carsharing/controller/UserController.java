@@ -1,6 +1,5 @@
 package com.demo.carsharing.controller;
 
-import com.demo.carsharing.dto.mapper.DtoMapper;
 import com.demo.carsharing.dto.request.UserRequestDto;
 import com.demo.carsharing.dto.response.UserResponseDto;
 import com.demo.carsharing.model.User;
@@ -25,33 +24,39 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
     private final AuthenticationService authenticationService;
-    private final DtoMapper<User, UserRequestDto, UserResponseDto> userMapper;
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get user by id")
+    public UserResponseDto getById(@PathVariable Long id) {
+        return userService.findById(id);
+    }
 
     @GetMapping("/me")
     @Operation(summary = "Get my profile info by token")
     public UserResponseDto get(Authentication authentication) {
-        return userMapper.toDto(userService.findByEmail(authentication.getName()).get());
+        return userService.findByEmail(authentication.getName());
     }
 
     @PutMapping("/me")
     @Operation(summary = "Update profile info by token")
     public UserResponseDto update(Authentication authentication,
                                   @RequestBody @Valid UserRequestDto userRequestDto) {
-        Long userId = userService.findByEmail(authentication.getName()).get().getId();
-        User user = userMapper.toModel(userRequestDto)
-                .setId(userId)
-                .setRole(userService.findById(userId).getRole())
-                .setPassword(authenticationService.encodePassword(userRequestDto.getPassword()));
-        return userMapper.toDto(userService.update(user));
+        Long userId = userService.findByEmail(authentication.getName()).getId();
+        userRequestDto.setId(userId);
+        userRequestDto.setRole(userService.findById(userId).getRole());
+        userRequestDto.setPassword(authenticationService.encodePassword(
+                userRequestDto.getPassword()));
+        return userService.update(userRequestDto);
     }
 
     @PutMapping("/{id}/role")
     @Operation(summary = "Update user role")
     public UserResponseDto updateRole(@PathVariable Long id, @RequestParam("role") String role) {
         try {
-            User user = userService.findById(id);
-            user.setRole(User.Role.valueOf(role));
-            return userMapper.toDto(userService.update(user));
+            UserRequestDto userRequestDto = new UserRequestDto();
+            userRequestDto.setId(id);
+            userRequestDto.setRole(User.Role.valueOf(role));
+            return userService.update(userRequestDto);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(String.format("Invalid user role '%s'. Used only '%s'.",
                     role, Arrays.toString(User.Role.values())));

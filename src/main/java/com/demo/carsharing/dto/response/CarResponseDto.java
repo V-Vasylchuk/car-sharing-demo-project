@@ -18,4 +18,7 @@ public class CarResponseDto {
     private Car.Type type;
     private Integer inventory;
     private BigDecimal dailyFee;
+    private String bucketName;
+    private String keyName;
+    private String presignedUrl;
 }

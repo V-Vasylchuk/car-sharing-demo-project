@@ -1,9 +1,7 @@
 package com.demo.carsharing.controller;
 
-import com.demo.carsharing.dto.mapper.DtoMapper;
 import com.demo.carsharing.dto.request.RentalRequestDto;
 import com.demo.carsharing.dto.response.RentalResponseDto;
-import com.demo.carsharing.model.Rental;
 import com.demo.carsharing.service.CarService;
 import com.demo.carsharing.service.NotificationService;
 import com.demo.carsharing.service.RentalService;
@@ -11,7 +9,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,21 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/rentals")
 public class RentalController {
-    private final DtoMapper<Rental, RentalRequestDto, RentalResponseDto> rentalMapper;
-    private final NotificationService telegramService;
     private final RentalService rentalService;
     private final CarService carService;
 
     @PostMapping
     @Operation(summary = "Add a new rental")
     public RentalResponseDto add(@RequestBody @Valid RentalRequestDto rentalRequestDto) {
-        RentalResponseDto rentalResponseDto = rentalMapper
-                .toDto(rentalService
-                        .save(rentalMapper
-                                .toModel(rentalRequestDto)));
-        carService.decreaseInventory(rentalResponseDto.getCarId(), 1); // One car for testing
-        telegramService.sendMessageAboutNewRental(rentalResponseDto);
-        return rentalResponseDto;
+        carService.decreaseInventory(rentalRequestDto.getCarId(), 1);
+        return rentalService.save(rentalRequestDto);
     }
 
     @GetMapping
@@ -54,21 +44,11 @@ public class RentalController {
             @Parameter(description = "default value is '10'") Integer count,
             @RequestParam(defaultValue = "0")
             @Parameter(description = "default value is '0'") Integer page) {
-
         PageRequest pageRequest = PageRequest.of(page, count);
-
         if (isActive) {
-            return rentalService.findAllByUserId(userId, pageRequest)
-                    .stream()
-                    .map(rentalMapper::toDto)
-                    .filter(d -> d.getActualReturnDate() == null)
-                    .collect(Collectors.toList());
+            return rentalService.findAllByUserId(userId, pageRequest);
         }
-        return rentalService.findAllByUserId(userId, pageRequest)
-                .stream()
-                .map(rentalMapper::toDto)
-                .filter(d -> d.getActualReturnDate() != null)
-                .collect(Collectors.toList());
+        return rentalService.findAllByUserId(userId, pageRequest);
     }
 
     @PostMapping("/{id}/return")
@@ -77,7 +57,7 @@ public class RentalController {
             @Parameter(description = "Rental's id to find set the date of car return")
             @PathVariable Long id) {
         rentalService.updateActualReturnDate(id);
-        RentalResponseDto rentalResponseDto = rentalMapper.toDto(rentalService.getById(id));
+        RentalResponseDto rentalResponseDto = rentalService.getById(id);
         carService.increaseInventory(rentalResponseDto.getCarId(), 1);
         return rentalResponseDto;
     }
