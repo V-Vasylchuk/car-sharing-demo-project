@@ -56,13 +56,13 @@ public class TelegramNotificationServiceImpl extends TelegramLongPollingBot
                     break;
                 default:
                     sendMessage(String.valueOf(update.getMessage().getChatId()),
-                            "unknown command");
+                            "Unknown command");
             }
         }
     }
 
     private void startCommandReceived(String chatId, String name) {
-        String answer = "Hi, " + name + ", nice to meet you!";
+        String answer = String.format("Hi %s nice to meet you!", name);
         sendMessage(chatId, answer);
     }
 
@@ -100,11 +100,16 @@ public class TelegramNotificationServiceImpl extends TelegramLongPollingBot
         return matcher.matches();
     }
 
-    @Scheduled(cron = "10 * * * * ?")
+    @Scheduled(cron = "0 9 * * *")  // Every day at 9 p.m
     public void notifyAllUsersWhereActualReturnDateIsAfterReturnDate() {
         List<Rental> rentals = rentalService.findAllByActualReturnDateAfterReturnDate();
-        if (rentals.size() == 0) {
-            sendMessage(botConfig.getAdminId(), "No rentals overdue today!");
+        int rentalQuantity = rentals.size();
+        if (rentalQuantity == 0) {
+            sendMessage(botConfig.getAdminId(),
+                    "No rentals overdue today!");
+        } else {
+            sendMessage(botConfig.getAdminId(),
+                    String.format("Today %s rentals overdue!", rentalQuantity));
         }
         for (Rental rental : rentals) {
             sendMessage(userService.findById(rental.getUser().getId()).getChatId(),

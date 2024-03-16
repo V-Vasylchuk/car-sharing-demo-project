@@ -1,12 +1,12 @@
 spring:
   datasource:
-    url: YOUR_URL
-    username: YOUR_USERNAME
-    password: YOUR_PASSWORD
+    url: jdbc:mysql://localhost:3306/car-sharing-service
+    username: root
+    password: 9616
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
   jooq:
     sql-dialect: org.hibernate.dialect.MySQL8Dialect
 
@@ -19,6 +19,12 @@ security:
     token:
       secret-key: secret
       expire-length: 3600000
+
+
+bot:
+  name: CarRentalTestBot
+  token: 7189530524:AAG1dMWJakFAYvmmIpSQLSnfyNb1VGw6LDw
+  admin_chat: 1
 
 
 stripe:
