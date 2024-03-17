@@ -12,6 +12,8 @@ function EditCarForm() {
     inventory: '',
     dailyFee: '',
   });
+
+
   const navigation = useNavigate();
 
   useEffect(() => {
@@ -47,16 +49,27 @@ function EditCarForm() {
     inventory: '',
     dailyFee:'',
     type: 'SEDAN',
+    presignedUrl: ''
   });
 
   const onInputChange = (e) => {
-    const { name, value } = e.target;
-    setCar({ ...car, [e.target.name]: e.target.value });
-    if (value.length < 2 || value.length > 20) {
-      setErrors({ ...errors, [name]: `${name.charAt(0).toUpperCase() + name.slice(1)} must be between 2 and 20 characters` });
+    const {name, value} = e.target;
+    setCar({...car, [name]: value});
+
+    if (name === 'inventory' || name === 'dailyFee') {
+      if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+        setErrors({...errors, [name]: `${name.charAt(0).toUpperCase() + name.slice(1)} must be a number`});
+      } else {
+        setErrors({...errors, [name]: ''});
+      }
     } else {
-      setErrors({ ...errors, [name]: '' });
-    };
+      setErrors({
+        ...errors,
+        [name]: value.length < 2 || value.length > 20 ? `${name.charAt(0).toUpperCase() + name.slice(1)} must be between 2 and 20 characters` : ''
+      });
+    }
+
+    setCar({...car, [name]: value});
   };
 
   const onSubmit = async (e) => {
@@ -108,41 +121,48 @@ function EditCarForm() {
     }
   };
 
+
+
   return (
     <div className='addCar'>
-       <button className="btn"><Link to={`/cars/${id}`}>Go Back </Link> </button>
+       <button className="btn car_btn button-52"><Link to={`/cars/${id}`}>Go Back </Link> </button>
       <div className='container_add'>
         <h1 className='container__title'>Edit Car</h1>
         <div className='wrapper_add'>
           <div className='form-wrapper'>
             <form onSubmit={e => onSubmit(e)} noValidate>
+              <div>
+                <img src={car.presignedUrl} alt='Uploaded' style={{maxWidth: '100%'}}/>
+              </div>
               <div className='model'>
                 <label htmlFor='model'>Model</label>
-                <input type='text' name='model' value={car.model} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} noValidate required />
+                <input type='text' name='model' value={car.model || ''} onChange={e => onInputChange(e)}
+                       onKeyPress={handleKeyPress} noValidate required/>
                 {errors.model && <span className='error'>{errors.model}</span>}
               </div>
               <div className='brand'>
                 <label htmlFor='brand'>Brand</label>
-                <input type='text' name='brand' value={car.brand} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} noValidate required />
+                <input type='text' name='brand' value={car.brand || ''} onChange={e => onInputChange(e)}
+                       onKeyPress={handleKeyPress} noValidate required/>
                 {errors.brand && <span className='error'>{errors.brand}</span>}
               </div>
-              {/* <div className='photo'>
-                <label htmlFor='photo'>Add Photo</label>
-                <input type='file' name='photo' className='photo_input' onChange={e => onInputChange(e)} />
-              </div> */}
+
               <div className='brand'>
                 <label htmlFor='inventory'>Inventory</label>
-                <input type='text' name='inventory' value={car.inventory} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} noValidate required />
-
+                <input type='text' name='inventory' value={car.inventory || ''} onChange={e => onInputChange(e)}
+                       onKeyPress={handleKeyPress} noValidate required/>
+                {errors.inventory && <span className='error'>{errors.inventory}</span>}
               </div>
               <div className='brand'>
                 <label htmlFor='dailyFee'>DailyFee</label>
-                <input type='text' name='dailyFee' value={car.dailyFee} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} noValidate required />
-
+                <input type='text' name='dailyFee' value={car.dailyFee || ''} onChange={e => onInputChange(e)}
+                       onKeyPress={handleKeyPress} noValidate required/>
+                {errors.dailyFee && <span className='error'>{errors.dailyFee}</span>}
               </div>
               <div className='carType'>
                 <label htmlFor='carType'>Car Type</label>
-                <select name='carType' value={car.type} onChange={(e) => setCar({ ...car, type: e.target.value })} onKeyPress={handleKeyPress}>
+                <select name='carType' value={car.type || ''} onChange={(e) => setCar({...car, type: e.target.value})}
+                        onKeyPress={handleKeyPress}>
                   <option value='SEDAN'>SEDAN</option>
                   <option value='SUV'>SUV</option>
                   <option value='HATCHBACK'>HATCHBACK</option>

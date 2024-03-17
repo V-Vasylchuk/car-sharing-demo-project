@@ -68,8 +68,8 @@ function Rentals() {
               {rentals.map((rental,index) => (
                 <tr key={rental.id}>
                   <th scope="row">{index + 1}</th>
-                  <td><Link to="/edit_user_role/1">1</Link> </td>
-                  <td>{rental.carBrand}</td>
+                  <td><Link to="/edit_user_role/1">{rental.user.firstName}</Link> </td>
+                  <td>{rental.car.brand}</td>
                   <td>{rental.actualReturnDate.split('T')[0]}</td>
                   <td>{isActive(rental) ? <FcHighPriority /> : <FcApproval />}</td>
                 </tr>

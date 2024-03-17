@@ -99,7 +99,7 @@ const Car = () => {
   return (
     <div className="car">
       <img className="bg_img" src="https://i.pinimg.com/originals/c8/c4/9c/c8c49c36fe2cafc94f3fb55cfea141a1.jpg" alt="" />
-      <button className="btn car_btn button-52"><Link to="/cars" >Go Back </Link> </button>
+      <button className="btn button-52"><Link to="/cars" >Go Back </Link> </button>
       <div className="car_wrapper">
         <div className="car_img"><img src={presignedUrl} alt='' /></div>
         <div className="car_info">

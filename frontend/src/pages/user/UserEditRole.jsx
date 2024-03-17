@@ -8,7 +8,6 @@ import { useUser } from './userContext';
 function UserEditRole() {
   const { id } = useParams();
   const navigation = useNavigate();
-console.log(id)
  
   useEffect(() => {
     if (getToken() === null) {
@@ -17,7 +16,7 @@ console.log(id)
   }, [getToken()]);
 
   const { user, setUser } = useUser();
-  console.log(user)
+
 
   const onInputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value })

@@ -35,7 +35,7 @@ function Payment() {
             return;
         }
         try {
-            const response = await fetch(`${backendUrl}/api/v1/stripe/create-payment`, {
+            const response = await fetch(`${backendUrl}/payment/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ function Payment() {
 
     const capturePayment = async () => {
         try {
-            const response = await fetch(`${backendUrl}/api/v1/stripe/capture-payment?sessionId=${sessionId}`, {
+            const response = await fetch(`${backendUrl}/payment/capture?sessionId=${sessionId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -140,7 +140,8 @@ function Payment() {
         try {
             let body = {
                 ...order,
-                carId: car.id
+                carId: car.id,
+                userId: user.id
             }
 
             await axios.request({

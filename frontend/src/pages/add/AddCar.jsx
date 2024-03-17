@@ -17,7 +17,6 @@ function AddCar() {
         model: '',
         brand: '',
         inventory: '',
-        // presignedUrl: '',
         dailyFee: '',
         type: 'SEDAN'
     });
@@ -60,7 +59,7 @@ function AddCar() {
                 hasError = true;
             }
         });
-            console.log(hasError)
+
         if (hasError) {
             setErrors({
                 model: car.model.trim().length < 1 ? 'Please fill in the Model field' : '',
@@ -70,7 +69,7 @@ function AddCar() {
             });
             return;
         }
-        console.log(carFile)
+
         try {
             const formData = new FormData();
             formData.append('car', JSON.stringify(car));

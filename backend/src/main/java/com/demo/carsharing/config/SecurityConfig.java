@@ -60,6 +60,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/rentals/{id}")
                         .hasAnyRole(MANAGER, CUSTOMER)
                         .requestMatchers(HttpMethod.GET, "/rentals").hasRole(MANAGER)
+                        .requestMatchers(HttpMethod.GET, "/rentals/").hasRole(MANAGER)
                         .requestMatchers(HttpMethod.POST, "/rentals").hasRole(MANAGER)
                         .anyRequest()
                         .authenticated()
