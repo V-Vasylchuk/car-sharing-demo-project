@@ -1,0 +1,112 @@
+.car {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  font-family: "Exo 2";
+}
+.car .bg_img {
+  position: absolute;
+  top: 0;
+  border-radius: 0;
+  opacity: 0.4;
+  width: 100%;
+}
+.car::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+.car_wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin: 10% 10%;
+  padding: 20px;
+  border-radius: 5px;
+  position: relative;
+  z-index: 1;
+}
+.car .car_img {
+  width: 50%;
+}
+.car .car_info {
+  display: flex;
+  margin-left: 30px;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.car h2 {
+  padding: 0px;
+}
+.car .car_info_text {
+  font-size: 20px;
+}
+.car .car_btn {
+  border: solid #d92f2f;
+  margin: 20px 10px;
+  padding: 15px;
+}
+.car .button-52 {
+  font-size: 16px;
+  font-weight: 200;
+  letter-spacing: 1px;
+  padding: 13px 20px 13px;
+  outline: 0;
+  border: 1px solid black;
+  cursor: pointer;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0);
+  -moz-user-select: none;
+       user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.car .button-52 a {
+  text-decoration: none;
+  color: black;
+}
+.car .button-52:after {
+  content: "";
+  background-color: #b82f1a;
+  width: 100%;
+  z-index: -1;
+  position: absolute;
+  height: 100%;
+  top: 7px;
+  left: 7px;
+  transition: 0.2s;
+}
+.car .button-52:hover:after {
+  top: 0px;
+  left: 0px;
+}
+@media (min-width: 768px) {
+  .car .button-52 {
+    padding: 13px 50px 13px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .car .car_wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+  .car .car_img {
+    width: 80%;
+    margin-bottom: 20px;
+  }
+  .car .car_info {
+    margin-left: 0;
+  }
+  .car .car_btn {
+    margin: 20px 0;
+  }
+}
+.car .btn {
+  z-index: 2;
+  position: relative;
+  margin: 20px 10px;
+  padding: 15px;
+}/*# sourceMappingURL=car.css.map */

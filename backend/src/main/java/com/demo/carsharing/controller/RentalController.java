@@ -50,6 +50,13 @@ public class RentalController {
         return rentalService.findAllByUserId(userId, pageRequest);
     }
 
+    @GetMapping("/")
+    @Operation(summary = "Get all rentals")
+    public List<RentalResponseDto> getByUser() {
+
+        return rentalService.findAll();
+    }
+
     @PostMapping("/{id}/return")
     @Operation(summary = "Set car return date")
     public RentalResponseDto setActualDate(
@@ -57,7 +64,7 @@ public class RentalController {
             @PathVariable Long id) {
         rentalService.updateActualReturnDate(id);
         RentalResponseDto rentalResponseDto = rentalService.getById(id);
-        carService.increaseInventory(rentalResponseDto.getCarId(), 1);
+        carService.increaseInventory(rentalResponseDto.getCar().getId(), 1);
         return rentalResponseDto;
     }
 }

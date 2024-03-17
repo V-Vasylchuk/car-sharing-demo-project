@@ -17,7 +17,7 @@
     <description>Car-Sharing demo project for ISG</description>
 
     <modules>
-        <!--<module>frontend</module>-->
+        <module>frontend</module>
         <module>backend</module>
     </modules>
 </project>

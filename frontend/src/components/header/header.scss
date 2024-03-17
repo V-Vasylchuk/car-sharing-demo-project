@@ -1,0 +1,140 @@
+.header__wrapper {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 4, 1) 0%,
+    rgba(90, 90, 93, 1) 35%,
+    rgb(245, 245, 245) 100%
+  );
+  font-size: 110px;
+  display: flex;
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 140px;
+  z-index: 1;
+  position: relative;
+.nav-options{
+  display: flex;
+  font-size: 20px;
+  margin-left: 30px;
+  list-style-type: none;
+  .option{
+    padding: 20px;
+    .img_user{
+      width: 50px;
+    }
+  }
+}
+  .close-menu{
+    font-size: 20px;
+    position: absolute;
+    right: 40px;
+    background: none;
+    border: none;
+  }
+
+  .btn__main {
+    background-color: rgba(0, 0, 0, 0.0);
+    border: none;
+    font-size: 15px;
+    text-decoration: none;
+
+    .logo {
+      padding: 5px 0;
+      font-family: "Oswald", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 700;
+      font-style: normal;
+      text-shadow: 5px 0px black;
+    }
+  }
+
+  .exit {
+    font-family: "Poppins", sans-serif;
+    font-size: 25px;
+    padding: 0 30px;
+  }
+
+  .text{
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 40px;
+  }
+
+  .active {
+    color: rgb(182, 40, 40);
+  }
+
+  @media (max-width: 850px) {
+    .nav__wrapper {
+      display: none;
+    }
+    .text{
+      font-size: 20px;
+    }
+    .logo {
+      font-size: 60px;
+    }
+    .nav-options{
+      font-size: 10px;
+      display: flex;
+      margin-right: 40px;
+      padding: 5px;
+
+      .option{
+        padding: 10px;
+        
+      }
+      
+    }
+
+    .menu-icon {
+      display: block;
+      cursor: pointer;
+      border: none;
+      background: none;
+      margin: 10px 20px;
+    }
+
+
+    .menu-icon.active + .nav__wrapper {
+      display: block;
+    }
+
+    .menu-icon.active {
+      display: none;
+    }
+
+    .close-menu.active {
+      display: block;
+   
+        position: absolute;
+        right: 10px;
+        background: none;
+        border: none;
+      
+    }
+  }
+
+  @media (min-width: 849px) {
+    .menu-icon {
+      display: none;
+    }
+    .logo{
+      font-size: 80px;
+    }
+
+    .close-menu {
+      display: none;
+      position: absolute;
+      right: 10px;
+      background: none;
+      border: none;
+    }
+  }
+ 
+}
