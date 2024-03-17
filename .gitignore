@@ -2,3 +2,4 @@
 .mvn/*
 *.iml
 target/*
+.DS_Store

@@ -70,6 +70,14 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
+    public List<RentalResponseDto> findAll() {
+        List<Rental> rentalList = rentalRepository.findAll();
+        return rentalList.stream()
+                .map(mapper::toDto)
+                .toList();
+    }
+
+    @Override
     @Transactional
     public void updateActualReturnDate(Long id) {
         log.debug("Try update actual Return date by Rental id {} in DB", id);

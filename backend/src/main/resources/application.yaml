@@ -6,7 +6,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
   jooq:
     sql-dialect: org.hibernate.dialect.MySQL8Dialect
 
@@ -21,10 +21,10 @@ security:
       expire-length: 3600000
 
 aws:
-  accessKey: your own iam user access key
-  secretAccessKey: your own iam user secret access key
-  bucketName: your own s3 bucket, for example - demo-car-sharing-bucket
-  region: region of your bucket, for example - eu-central-1
+  accessKey: AKIARABN2Z6NPVERJJRP
+  secretAccessKey: 0whlD59jCg063bFJPuN5aYqLqMypUrFxIhTVgi9W
+  bucketName: landing19012024
+  region: eu-central-1
 
 
 bot:
