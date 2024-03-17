@@ -4,7 +4,6 @@ import './rules.scss'
 function Rules() {
   return (
     <div className='container_rules'>
-
       <div className="content">
         <div className="bg_img_rules"></div>
         <h2>Rules rent auto</h2>

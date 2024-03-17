@@ -121,8 +121,6 @@ function EditCarForm() {
     }
   };
 
-
-
   return (
     <div className='addCar'>
        <button className="btn car_btn button-52"><Link to={`/cars/${id}`}>Go Back </Link> </button>

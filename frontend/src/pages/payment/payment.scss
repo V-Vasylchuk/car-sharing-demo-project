@@ -100,16 +100,19 @@ img {
   border: none;
   font-weight: 600;
 }
-.rentalDate, 
-.returnDate, 
-.actualReturnDate{
+
+.rentalDate,
+.returnDate,
+.actualReturnDate {
   margin: 10px;
-  label{
+
+  label {
     font-family: 'Exo 2' sans-serif;
     color: white;
     margin-right: 10px;
   }
 }
+
 .btn.btn-primary:hover .fas {
   transform: translateX(10px);
   transition: transform 0.5s ease
@@ -132,5 +135,3 @@ img {
   font-family: 'Work Sans', sans-serif !important;
   font-weight: 800 !important;
 }
-
-

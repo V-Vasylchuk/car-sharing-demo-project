@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './payment.scss'
 import Stripe from "react-stripe-checkout";
-import { useNavigate, useParams } from 'react-router-dom';
-import { backendUrl, getBearerToken, getToken } from '../../config';
+import {useNavigate, useParams} from 'react-router-dom';
+import {backendUrl, getBearerToken, getToken} from '../../config';
 import axios from 'axios';
 import HeaderPages from '../../components/header/HeaderPages';
-import { DateTimeFormatter, LocalDateTime } from 'js-joda';
-import { useUser } from '../user/userContext';
+import {DateTimeFormatter, LocalDateTime} from 'js-joda';
+import {useUser} from '../user/userContext';
 
 function Payment() {
-    const { id } = useParams();
-    const { user, setUser } = useUser();
+    const {id} = useParams();
+    const {user, setUser} = useUser();
 
     const [errors, setErrors] = useState({
         rentalDate: '',
@@ -98,8 +98,6 @@ function Payment() {
     }, []);
 
 
-
-
     useEffect(() => {
         if (getToken() === null) {
             navigation("/")
@@ -108,16 +106,16 @@ function Payment() {
 
 
     const onInputChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         let parsedValue = value;
-        let updatedErrors = { ...errors };
+        let updatedErrors = {...errors};
 
         setErrors(updatedErrors);
 
         if (name === 'rentalDate' || name === 'returnDate' || name === 'actualReturnDate') {
             parsedValue = LocalDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME);
         }
-        setOrder({ ...order, [name]: parsedValue });
+        setOrder({...order, [name]: parsedValue});
     };
 
     const onSubmit = async (e) => {
@@ -126,10 +124,10 @@ function Payment() {
         Object.entries(order).forEach(([key, value]) => {
             if (typeof value === 'string' && value.trim().length === 0) {
                 hasError = true;
-                setErrors({ ...errors, [key]: 'This field is required' });
+                setErrors({...errors, [key]: 'This field is required'});
             } else if (value === null || value === undefined) {
                 hasError = true;
-                setErrors({ ...errors, [key]: 'This field is required' });
+                setErrors({...errors, [key]: 'This field is required'});
             }
         });
 
@@ -160,8 +158,6 @@ function Payment() {
             console.error('Error fetching data:', error);
         }
     };
-
-
 
 
     useEffect(() => {
@@ -201,7 +197,7 @@ function Payment() {
 
     return (
         <div className='addCar'>
-            <HeaderPages />
+            <HeaderPages/>
             <div className='container_add'>
                 <h1 className='container__title'>Payment Page</h1>
                 <div className='wrapper_add'>
@@ -209,26 +205,40 @@ function Payment() {
                         <form onSubmit={onSubmit} noValidate>
                             <div className='rentalDate'>
                                 <label htmlFor='rentalDate'>Rental Date</label>
-                                <input type="datetime-local" name='rentalDate' value={order.rentalDate || ''} onChange={onInputChange} onKeyPress={handleKeyPress} />
-                                {errors.rentalDate && <span className='error'>{errors.rentalDate}</span>}
+                                <input type="datetime-local" name='rentalDate'
+                                       value={order.rentalDate || ''} onChange={onInputChange}
+                                       onKeyPress={handleKeyPress}/>
+                                {errors.rentalDate &&
+                                    <span className='error'>{errors.rentalDate}</span>}
                             </div>
                             <div className='returnDate'>
                                 <label htmlFor='returnDate'>Return Date</label>
-                                <input type="datetime-local" name='returnDate' value={order.returnDate || ''} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} />
-                                {errors.returnDate && <span className='error'>{errors.returnDate}</span>}
+                                <input type="datetime-local" name='returnDate'
+                                       value={order.returnDate || ''}
+                                       onChange={e => onInputChange(e)}
+                                       onKeyPress={handleKeyPress}/>
+                                {errors.returnDate &&
+                                    <span className='error'>{errors.returnDate}</span>}
                             </div>
                             <div className='actualReturnDate'>
                                 <label htmlFor='inventory'>Actual Return Date</label>
-                                <input type="datetime-local" name='actualReturnDate' value={order.actualReturnDate || ''} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} />
-                                {errors.inventory && <span className='error'>{errors.inventory}</span>}
+                                <input type="datetime-local" name='actualReturnDate'
+                                       value={order.actualReturnDate || ''}
+                                       onChange={e => onInputChange(e)}
+                                       onKeyPress={handleKeyPress}/>
+                                {errors.inventory &&
+                                    <span className='error'>{errors.inventory}</span>}
                             </div>
                             <div className='brand'>
                                 <label htmlFor='carId'>Car brand</label>
-                                <input type='text' name='carId' value={car.brand || ''} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} noValidate required />
+                                <input type='text' name='carId' value={car.brand || ''}
+                                       onChange={e => onInputChange(e)} onKeyPress={handleKeyPress}
+                                       noValidate required/>
                             </div>
 
                             <div className='submit'>
-                                <button onClick={createPayment} type='submit'>Create Payment</button>
+                                <button onClick={createPayment} type='submit'>Create Payment
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -237,7 +247,6 @@ function Payment() {
 
                             {sessionId && <button onClick={capturePayment}>Capture Payment</button>}
                         </div>
-
                     </div>
                 </div>
             </div>

@@ -47,10 +47,10 @@ const Car = () => {
   }, [getToken()]);
 
   useEffect(() => {
-    fetchData();
+    fetchCarData();
   }, []);
 
-  const fetchData = async () => {
+  const fetchCarData = async () => {
     try {
       await axios.request({
         headers: {
@@ -99,8 +99,9 @@ const Car = () => {
   return (
     <div className="car">
       <img className="bg_img" src="https://i.pinimg.com/originals/c8/c4/9c/c8c49c36fe2cafc94f3fb55cfea141a1.jpg" alt="" />
-      <button className="btn button-52"><Link to="/cars" >Go Back </Link> </button>
-      <div className="car_wrapper">
+      <Link to="/cars" className=""><button className="btn button-52">Go Back</button>
+      </Link>
+  <div className="car_wrapper">
         <div className="car_img"><img src={presignedUrl} alt='' /></div>
         <div className="car_info">
           <div className="car_info_text">
@@ -114,11 +115,11 @@ const Car = () => {
             <div className="car_info_btn">
               <Link to={`/cars/edit/${id}`}><button className="btn car_btn button-52">EDIT</button></Link>
               <button className="btn car_btn button-52" onClick={() => onDelete(car.id)}>DELETE</button>
-              <Link to={`/payment/${id}`}><button className="btn car_btn button-52">ORDER</button></Link> 
+              <Link to={`/payment/${id}`}><button className="btn car_btn button-52">ORDER</button></Link>
             </div>
           ) : (
             <div className="car_info_btn">
-                <Link to={`/mypayment/${id}`}><button className="btn car_btn button-52">ORDER</button></Link> 
+                <Link to={`/payment/${id}`}><button className="btn car_btn button-52">ORDER</button></Link>
             </div>
           )}
         </div>

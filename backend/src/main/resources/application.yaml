@@ -21,10 +21,10 @@ security:
       expire-length: 3600000
 
 aws:
-  accessKey: AKIARABN2Z6NPVERJJRP
-  secretAccessKey: 0whlD59jCg063bFJPuN5aYqLqMypUrFxIhTVgi9W
-  bucketName: landing19012024
-  region: eu-central-1
+  accessKey: your access key
+  secretAccessKey: your secret key
+  bucketName: your bucket name
+  region: your bucket region
 
 
 bot:

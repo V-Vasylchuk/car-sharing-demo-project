@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react'
 import HeaderPages from '../../components/header/HeaderPages';
 import './rentals.scss';
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {backendUrl, getBearerToken, getToken} from '../../config';
 import axios from 'axios';
 import {FcApproval} from "react-icons/fc";
 import {FcHighPriority} from "react-icons/fc";
 import {useUser} from '../user/userContext';
 
-function Rentals() {
-    const [error, setError] = useState(null);
+function MyRentals() {
     const [rentals, setRentals] = useState([]);
+    const [userRentals, setUserRentals] = useState([]);
     const {user} = useUser();
     const navigation = useNavigate();
 
@@ -19,9 +19,17 @@ function Rentals() {
             navigation("/")
         }
     }, [getToken()]);
+
     useEffect(() => {
         fetchData();
     }, []);
+
+    useEffect(() => {
+        if (user.id && user.role === 'CUSTOMER') {
+            const filteredRentals = rentals.filter(rental => rental.user.id === user.id);
+            setUserRentals(filteredRentals);
+        }
+    }, [user, rentals]);
 
     const fetchData = async () => {
         try {
@@ -36,7 +44,7 @@ function Rentals() {
             });
 
         } catch (error) {
-            console.error('Error fetching data:', error);
+            alert('Error fetching data:', error);
         }
     };
 
@@ -47,6 +55,7 @@ function Rentals() {
 
         return returnDate < currentDate;
     }
+
 
     return (
         <div className='rental'>
@@ -65,11 +74,11 @@ function Rentals() {
                         </tr>
                         </thead>
                         <tbody>
-                        {rentals.map((rental, index) => (
+                        {userRentals.map((rental, index) => (
                             <tr key={rental.id}>
                                 <th scope="row">{index + 1}</th>
-                                <td><Link to="/edit_user_role/1">{rental.user.firstName}</Link></td>
-                                <td>{rental.car.brand}</td>
+                                <td>{user.firstName}</td>
+                                <td>{rental.car.model}</td>
                                 <td>{rental.actualReturnDate.split('T')[0]}</td>
                                 <td>{isActive(rental) ? <FcHighPriority/> : <FcApproval/>}</td>
                             </tr>
@@ -82,4 +91,4 @@ function Rentals() {
     )
 }
 
-export default Rentals
+export default MyRentals;
