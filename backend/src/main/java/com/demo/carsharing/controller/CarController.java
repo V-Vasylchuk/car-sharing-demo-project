@@ -2,7 +2,7 @@ package com.demo.carsharing.controller;
 
 import com.demo.carsharing.dto.request.CarRequestDto;
 import com.demo.carsharing.dto.response.CarResponseDto;
-import com.demo.carsharing.model.Car;
+import com.demo.carsharing.exception.DataProcessingException;
 import com.demo.carsharing.service.CarService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,26 +30,29 @@ public class CarController {
 
     private CarService carService;
     private ObjectMapper objectMapper;
-        @PostMapping()
+
+    @PostMapping()
     @Operation(summary = "Create a new car")
-    public CarResponseDto create(@RequestPart(name = "car")  String jsonObject,
+    public CarResponseDto create(@RequestPart(name = "car") String jsonObject,
                       @RequestPart(name = "file") MultipartFile file) {
         CarRequestDto dto = null;
         try {
-            ServletUriComponentsBuilder.fromCurrentContextPath().path(String.valueOf(file)).toUriString();
+            ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path(String.valueOf(file)).toUriString();
             dto = objectMapper.readValue(jsonObject, CarRequestDto.class);
         } catch (JsonProcessingException exception) {
-            exception.printStackTrace();
+            throw new DataProcessingException("Invalid mapping", exception);
         }
         return carService.createCar(dto, file);
     }
 
-//    @PostMapping()
-//    @Operation(summary = "Create a new car")
-//    public CarResponseDto create(@RequestPart(name = "car") @Valid CarRequestDto carRequestDto,
-//                                 @RequestPart(name = "file") MultipartFile file) {
-//        return carService.createCar(carRequestDto, file);
-//    }
+    //    @PostMapping()
+    //    @Operation(summary = "Create a new car")
+    //    public CarResponseDto create(@RequestPart(name = "car")
+    //    @Valid CarRequestDto carRequestDto,
+    //                                 @RequestPart(name = "file") MultipartFile file) {
+    //        return carService.createCar(carRequestDto, file);
+    //    }
 
     @GetMapping()
     @Operation(summary = "Get all cars")
