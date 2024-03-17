@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/rentals")
@@ -28,8 +30,11 @@ public class RentalController {
     @PostMapping
     @Operation(summary = "Add a new rental")
     public RentalResponseDto add(@RequestBody @Valid RentalRequestDto rentalRequestDto) {
+        log.debug("Try create new Rental with MultipartFile");
         carService.decreaseInventory(rentalRequestDto.getCarId(), 1);
-        return rentalService.save(rentalRequestDto);
+        RentalResponseDto rentalResponseDto = rentalService.save(rentalRequestDto);
+        log.debug("New Rental was successfully created");
+        return rentalResponseDto;
     }
 
     @GetMapping
@@ -43,10 +48,14 @@ public class RentalController {
             @Parameter(description = "default value is '10'") Integer count,
             @RequestParam(defaultValue = "0")
             @Parameter(description = "default value is '0'") Integer page) {
+        log.debug("Try get all Rentals");
         PageRequest pageRequest = PageRequest.of(page, count);
         if (isActive) {
-            return rentalService.findAllByUserId(userId, pageRequest);
+            return rentalService.findAllByUserId(userId, pageRequest).stream()
+                    .filter(date -> date.getActualReturnDate() == null)
+                    .toList();
         }
+        log.debug("All Rentals was successfully got");
         return rentalService.findAllByUserId(userId, pageRequest);
     }
 
@@ -62,9 +71,11 @@ public class RentalController {
     public RentalResponseDto setActualDate(
             @Parameter(description = "Rental's id to find set the date of car return")
             @PathVariable Long id) {
+        log.debug("Try update Rental actual date");
         rentalService.updateActualReturnDate(id);
         RentalResponseDto rentalResponseDto = rentalService.getById(id);
         carService.increaseInventory(rentalResponseDto.getCar().getId(), 1);
+        log.debug("Rental actual date was updated");
         return rentalResponseDto;
     }
 }

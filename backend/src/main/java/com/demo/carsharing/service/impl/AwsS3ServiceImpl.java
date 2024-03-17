@@ -13,6 +13,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.regions.Region;
@@ -22,6 +23,7 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AwsS3ServiceImpl implements AwsS3Service {
@@ -31,6 +33,8 @@ public class AwsS3ServiceImpl implements AwsS3Service {
 
     @Override
     public String getUrl(String bucketName, String keyName) {
+        log.debug("Try get Url of Car image by bucketName {} and keyName {} from S3 bucket",
+                bucketName, keyName);
         Region region = Region.of(clientS3Config.getRegion());
         S3Presigner s3Presigner = S3Presigner
                 .builder()
@@ -38,10 +42,13 @@ public class AwsS3ServiceImpl implements AwsS3Service {
                 .build();
         String presignedUrl = getPresignedUrl(s3Presigner, bucketName, keyName);
         s3Presigner.close();
+        log.debug("Url of Car image was successfully got from S3 bucket "
+                + " by bucketName {} and keyName {}", bucketName, keyName);
         return presignedUrl;
     }
 
     private String getPresignedUrl(S3Presigner s3Presigner, String bucketName, String keyName) {
+        log.debug("Try get PresignedURl of Car image from S3 bucket");
         String presidnetUrl = null;
         try {
             GetObjectRequest getObjectRequest = GetObjectRequest.builder()
@@ -62,14 +69,17 @@ public class AwsS3ServiceImpl implements AwsS3Service {
         } catch (S3Exception | IOException exception) {
             exception.getStackTrace();
         }
+        log.debug("PresignedURl of Car image was successfully got from S3 bucket");
         return presidnetUrl;
     }
 
     @Override
     public String upload(MultipartFile file) {
+        log.debug("Try upload Car image S3 bucket");
         File localFile = convertMultipartFileToFile(file);
         amazonS3.putObject(new PutObjectRequest(clientS3Config.getBucketName(),
                 file.getOriginalFilename(), localFile));
+        log.debug("Car image was successfully upload to S3 bucket");
         return file.getOriginalFilename();
     }
 

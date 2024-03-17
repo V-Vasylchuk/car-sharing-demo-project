@@ -34,6 +34,7 @@ public class StripeServiceImpl implements StripeService {
     @Override
     public StripeResponseDto<PaymentResponseDto> createPayment(
             PaymentRequestDto paymentRequestDto) {
+        log.debug("Try create Payment");
         Stripe.apiKey = secretKey;
         SessionCreateParams.LineItem.PriceData.ProductData productData =
                 createProductData(paymentRequestDto);
@@ -50,11 +51,13 @@ public class StripeServiceImpl implements StripeService {
         }
         PaymentResponseDto responseDataDto = createPaymentResponseData(session);
         paymentRepository.save(mapper.toModel(paymentRequestDto));
+        log.debug("Payment was successfully created");
         return createSuccessPaymentResponse(responseDataDto);
     }
 
     @Override
     public StripeResponseDto<CapturePaymentResponseDto> capturePayment(String sessionId) {
+        log.debug("Try capture Payment by sessionId {}", sessionId);
         Stripe.apiKey = secretKey;
         try {
             Session session = Session.retrieve(sessionId);
@@ -64,6 +67,7 @@ public class StripeServiceImpl implements StripeService {
             }
             CapturePaymentResponseDto responseData = createCaptureResponseData(session,
                     sessionId, status);
+            log.debug("Payment by sessionId {} was successfully captured", sessionId);
             return createSuccessCapturePaymentResponse(responseData);
         } catch (StripeException exception) {
             exception.printStackTrace();
@@ -75,7 +79,7 @@ public class StripeServiceImpl implements StripeService {
     public PaymentResponseDto getById(long id) {
         log.debug("Try get Payment by id {} from DB", id);
         Payment payment = paymentRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Payment not found with ID " + id));
+                () -> new EntityNotFoundException("Payment not found by ID " + id));
         log.debug("Payment by id {} was successfully from DB", id);
         return mapper.toDto(payment);
     }
