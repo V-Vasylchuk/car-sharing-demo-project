@@ -7,6 +7,10 @@
   background-color: lightgrey;
   border-radius: 20px;
 
+  &-image{
+    height: 60%;
+  }
+
   &:hover{
     transform: scale(1.2);
     background-color: gray;

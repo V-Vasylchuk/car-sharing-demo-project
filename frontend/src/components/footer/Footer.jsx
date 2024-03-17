@@ -19,7 +19,7 @@ function Footer() {
         
         <Link to="/add">ADD CAR</Link>
       
-        <Link to="/cars">LIST CAR</Link>
+        <Link to="/cars">CARS</Link>
       </p>
 
       <p className="footer-company-name"> © 2024</p>

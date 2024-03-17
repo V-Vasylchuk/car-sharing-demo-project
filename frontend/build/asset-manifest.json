@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/static/css/main.fabab485.css",
+    "main.js": "/static/js/main.def58e25.js",
+    "index.html": "/index.html",
+    "main.fabab485.css.map": "/static/css/main.fabab485.css.map",
+    "main.def58e25.js.map": "/static/js/main.def58e25.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fabab485.css",
+    "static/js/main.def58e25.js"
+  ]
+}
