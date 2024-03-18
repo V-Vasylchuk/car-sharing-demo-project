@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto save(UserRequestDto userRequestDto) {
         log.debug("Try create new User and save to DB");
         User user = mapper.toModel(userRequestDto);
-        userRepository.save(user);
+        user = userRepository.save(user);
         log.debug("New User {} was created and saved to DB", user);
         return mapper.toDto(user);
     }
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() ->
                         new DataProcessingException("Not found user with id:%s for update",
                                 userRequestDto.getId()));
-        userRepository.save(user);
+        user = userRepository.save(user);
         log.debug("User by id {} was updated and saved to DB", userRequestDto.getId());
         return mapper.toDto(user);
     }
