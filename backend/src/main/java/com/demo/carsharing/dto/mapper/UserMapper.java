@@ -9,7 +9,12 @@ import org.springframework.stereotype.Component;
 public class UserMapper implements DtoMapper<User, UserRequestDto, UserResponseDto> {
     @Override
     public User toModel(UserRequestDto requestDto) {
-        return new User()
+        return toModel(requestDto, new User());
+    }
+
+    @Override
+    public User toModel(UserRequestDto requestDto, User model) {
+        return model
                 .setFirstName(requestDto.getFirstName())
                 .setLastName(requestDto.getLastName())
                 .setEmail(requestDto.getEmail())

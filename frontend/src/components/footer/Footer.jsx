@@ -17,7 +17,7 @@ function Footer() {
       <p className="footer-links">
         <Link to="/main" className="link-1"></Link>
         
-        <Link to="/add">ADD CAR</Link>
+        <Link to="/car/add">ADD CAR</Link>
       
         <Link to="/cars">CARS</Link>
       </p>

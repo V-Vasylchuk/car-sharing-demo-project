@@ -69,10 +69,11 @@ public class CarServiceImpl implements CarService {
     @Transactional
     public CarResponseDto update(CarRequestDto carRequestDto) {
         log.debug("Try update Car by id {} from DB", carRequestDto.getId());
-        Car car = mapper.toModel(carRequestDto);
-        car = carRepository.findById(car.getId()).orElseThrow(() ->
+        Car car = carRepository.findById(carRequestDto.getId()).orElseThrow(() ->
                 new DataProcessingException("Can't find carRequestDto with id: "
                         + carRequestDto.getId()));
+
+        car = mapper.toModel(carRequestDto, car);
         car = carRepository.saveAndFlush(car);
 
         log.debug("Car by id {} was updated and saved to DB", carRequestDto.getId());

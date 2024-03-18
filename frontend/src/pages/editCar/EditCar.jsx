@@ -100,7 +100,7 @@ function EditCarForm() {
         },
         method: "PUT",
         url: `${backendUrl}/cars/${id}`,
-        body: car
+        data: car
       }).then(response => {
         setCar([response.data]);
         navigation(`/cars/${id}`);

@@ -9,7 +9,12 @@ import org.springframework.stereotype.Component;
 public class CarMapper implements DtoMapper<Car, CarRequestDto, CarResponseDto> {
     @Override
     public Car toModel(CarRequestDto requestDto) {
-        return new Car()
+        return toModel(requestDto, new Car());
+    }
+
+    @Override
+    public Car toModel(CarRequestDto requestDto, Car model) {
+        return model
                 .setId(requestDto.getId())
                 .setModel(requestDto.getModel())
                 .setBrand(requestDto.getBrand())

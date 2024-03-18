@@ -119,6 +119,15 @@ function Payment() {
         const { name, value } = e.target;
         let parsedValue = value;
         let updatedErrors = { ...errors };
+        if (name === 'returnDate') {
+            const enteredDate = new Date(value);
+            const today = new Date();
+            if (enteredDate < today) {
+                updatedErrors = { ...updatedErrors, [name]: 'Return date cannot be in the past' };
+            } else {
+                updatedErrors = { ...updatedErrors, [name]: '' };
+            }
+        }
 
         setErrors(updatedErrors);
 
@@ -218,17 +227,17 @@ function Payment() {
                             <div className='rentalDate'>
                                 <label htmlFor='rentalDate'>Rental Date</label>
                                 <input type="datetime-local" name='rentalDate' value={order.rentalDate || ''} onChange={onInputChange} onKeyPress={handleKeyPress} />
-                                {errors.rentalDate && <span className='error'>{errors.rentalDate}</span>}
+                                {errors.rentalDate && <p className='error'>{errors.rentalDate}</p>}
                             </div>
                             <div className='returnDate'>
                                 <label htmlFor='returnDate'>Return Date</label>
                                 <input type="datetime-local" name='returnDate' value={order.returnDate || ''} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} />
-                                {errors.returnDate && <span className='error'>{errors.returnDate}</span>}
+                                {errors.returnDate && <p className='error'>{errors.returnDate}</p>}
                             </div>
                             <div className='actualReturnDate'>
                                 <label htmlFor='inventory'>Actual Return Date</label>
                                 <input type="datetime-local" name='actualReturnDate' value={order.actualReturnDate || ''} onChange={e => onInputChange(e)} onKeyPress={handleKeyPress} />
-                                {errors.inventory && <span className='error'>{errors.inventory}</span>}
+                                {errors.inventory && <p className='error'>{errors.inventory}</p>}
                             </div>
                             <div className='brand'>
                                 <label htmlFor='carId'>Car brand</label>
