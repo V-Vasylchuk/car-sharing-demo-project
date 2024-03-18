@@ -9,6 +9,7 @@ const validEmailRegex = RegExp(
 );
 
 function LoginPage() {
+  const [loginError, setLoginError] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState({
@@ -31,10 +32,10 @@ function LoginPage() {
 
     switch (name) {
       case 'email':
-        updatedErrors.email = validEmailRegex.test(value) ? '' : 'Email is not valid!';
+        updatedErrors.email = value && validEmailRegex.test(value) ? '' : 'Email is not valid!';
         break;
       case 'password':
-        updatedErrors.password = value.length < 8 ? 'Password must be at least 8 characters long!' : '';
+        updatedErrors.password = value && value.length < 8 ? 'Password must be at least 8 characters long!' : '';
         break;
       default:
         break;
@@ -42,9 +43,9 @@ function LoginPage() {
 
     setError(updatedErrors);
     if (name === 'email') {
-      setEmail(value);
+      setEmail(value ? value : '');
     } else if (name === 'password') {
-      setPassword(value);
+      setPassword(value ? value : '');
     }
   };
 
@@ -54,7 +55,12 @@ function LoginPage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    
+
+    if (!validateForm(error)) {
+      alert('Invalid form');
+      return;
+    }
+
     try {
       let body = {
         email,
@@ -65,19 +71,12 @@ function LoginPage() {
       setToken(token);
       navigation('/main');
     } catch (error) {
-      setError('Invalid email or password!');
+      if (error.response && error.response.status === 401) {
+        setLoginError('Invalid email or password!');
+      } else {
+        setLoginError('An error occurred. Please try again later.');
+      }
       console.error('Error logging in:', error);
-    }
-
-    if (!email || !password) {
-      console.error('Please fill in all required fields');
-      return;
-    }
-    navigation('/main');
-    if (validateForm(error)) {
-      console.info('Valid Form');
-    } else {
-      console.error('Invalid Form');
     }
   };
 
@@ -94,7 +93,8 @@ function LoginPage() {
                 name='email'
                 onChange={onInputChange}
               />
-              {error.email.length > 0 && <span className='error'>{error.email}</span>}
+              {loginError && <span className='error'>{loginError}</span>}
+              {error.email && error.email.length > 0 && <span className='error'>{error.email}</span>}
               <label htmlFor='password'>Password</label>
               <input
                 type='password'
@@ -102,7 +102,8 @@ function LoginPage() {
                 name='password'
                 onChange={onInputChange}
               />
-              {error.password.length > 0 && <span className='error'>{error.password}</span>}
+              {loginError && <span className='error'>{loginError}</span>}
+              {error.password && error.password.length > 0 && <span className='error'>{error.password}</span>}
               <button type='submit'>Login</button>
             </form>
             <p>
