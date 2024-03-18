@@ -8,8 +8,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,18 +41,25 @@ public class CarController {
     @PostMapping()
     @Operation(summary = "Create a new car")
     public CarResponseDto create(@RequestPart(name = "car") String jsonObject,
-                      @RequestPart(name = "file") MultipartFile file) {
+                                 @RequestPart(name = "file") MultipartFile file) {
         log.debug("Try create new Car with MultipartFile");
-        CarRequestDto dto = null;
+        CarRequestDto carRequestDto;
         try {
             ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path(String.valueOf(file)).toUriString();
-            dto = objectMapper.readValue(jsonObject, CarRequestDto.class);
+            carRequestDto = objectMapper.readValue(jsonObject, CarRequestDto.class);
+            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+            Validator validator = factory.getValidator();
+            Set<ConstraintViolation<CarRequestDto>> violations
+                    = validator.validate(carRequestDto);
+            if (!violations.isEmpty()) {
+                throw new DataProcessingException("Not valid data for create nev car");
+            }
         } catch (JsonProcessingException exception) {
             throw new DataProcessingException("Invalid mapping", exception);
         }
         log.debug("New Car was successfully created");
-        return carService.createCar(dto, file);
+        return carService.createCar(carRequestDto, file);
     }
 
     @GetMapping()

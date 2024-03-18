@@ -28,7 +28,7 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     private Status status;
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private Car.Type type;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rental_id")
     private Rental rental;
@@ -40,12 +40,5 @@ public class Payment {
     public enum Status {
         SUCCESS,
         FAILURE
-    }
-
-    public enum Type {
-        SEDAN,
-        SUV,
-        HATCHBACK,
-        UNIVERSAL,
     }
 }
