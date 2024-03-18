@@ -90,14 +90,17 @@ function EditCarForm() {
       });
       return;
     }
+
+    console.log(car.dailyFee);
     try {
+      console.log(car.dailyFee);
       await axios.request({
         headers: {
           Authorization: getBearerToken()
         },
         method: "PUT",
         url: `${backendUrl}/cars/${id}`,
-        data: car 
+        body: car
       }).then(response => {
         setCar([response.data]);
         navigation(`/cars/${id}`);

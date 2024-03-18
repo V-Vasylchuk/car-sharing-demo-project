@@ -34,6 +34,14 @@ function Payment() {
             alert('Please fill in all date fields');
             return;
         }
+        const rentalDate = new Date(order.rentalDate).getTime();
+        const returnDate = new Date(order.returnDate).getTime();
+        const differenceInMilliseconds = returnDate - rentalDate;
+
+        const differenceInDays = Math.ceil(differenceInMilliseconds / (1000 * 3600 * 24));
+
+
+        const totalAmount = car.dailyFee * differenceInDays * 100;
         try {
             const response = await fetch(`${backendUrl}/payment/create`, {
                 method: 'POST',
@@ -43,7 +51,7 @@ function Payment() {
 
                 },
                 body: JSON.stringify({
-                    amount: car.dailyFee * 100,
+                    amount: totalAmount,
                     quantity: 1,
                     currency: 'USD',
                     name: car.brand + ' ' + car.model,

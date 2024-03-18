@@ -74,6 +74,7 @@ public class CarServiceImpl implements CarService {
                 new DataProcessingException("Can't find carRequestDto with id: "
                         + carRequestDto.getId()));
         car = carRepository.saveAndFlush(car);
+
         log.debug("Car by id {} was updated and saved to DB", carRequestDto.getId());
         return mapper.toDto(car);
     }
