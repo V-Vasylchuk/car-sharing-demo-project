@@ -56,7 +56,7 @@ function HeaderPages() {
           <button className="close-menu" onClick={handleMenuToggle}>X</button>
           <ul className="nav-options">
             <li className="option">
-              <NavLink to="/cars/add" className="text" activeclassname="active" >ADD CAR</NavLink>
+              <NavLink to="/car/add" className="text" activeclassname="active" >ADD CAR</NavLink>
             </li>
             <li className="option">
               <NavLink  to="/cars" className="text" activeclassname="active">CARS</NavLink>

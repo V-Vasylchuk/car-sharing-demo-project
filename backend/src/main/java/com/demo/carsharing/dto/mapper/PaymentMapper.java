@@ -9,7 +9,12 @@ import org.springframework.stereotype.Component;
 public class PaymentMapper implements DtoMapper<Payment, PaymentRequestDto, PaymentResponseDto> {
     @Override
     public Payment toModel(PaymentRequestDto requestDto) {
-        return new Payment()
+        return toModel(requestDto, new Payment());
+    }
+
+    @Override
+    public Payment toModel(PaymentRequestDto requestDto, Payment model) {
+        return model
                 .setSessionUrl(requestDto.getSuccessUrl())
                 .setAmount(requestDto.getAmount());
     }

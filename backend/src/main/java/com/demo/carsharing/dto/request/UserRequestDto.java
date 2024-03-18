@@ -26,5 +26,5 @@ public class UserRequestDto {
     private String password;
     @Enumerated(EnumType.STRING)
     private User.Role role;
-
+    private String chatId;
 }

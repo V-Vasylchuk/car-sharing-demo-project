@@ -42,17 +42,8 @@
     color: black;
   }
 }
-
-.button-52:after {
-  content: "";
-  background-color: #b82f1a;
-  width: 100%;
-  z-index: -1;
-  position: absolute;
-  height: 100%;
-  top: 7px;
-  left: 7px;
-  transition: 0.2s;
+.link_btn{
+  display: contents;
 }
 
 .list{

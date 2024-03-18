@@ -21,7 +21,12 @@ public class RentalMapper implements DtoMapper<Rental, RentalRequestDto, RentalR
 
     @Override
     public Rental toModel(RentalRequestDto requestDto) {
-        return new Rental()
+        return toModel(requestDto, new Rental());
+    }
+
+    @Override
+    public Rental toModel(RentalRequestDto requestDto, Rental model) {
+        return model
                 .setRentalDate(requestDto.getRentalDate())
                 .setReturnDate(requestDto.getReturnDate())
                 .setActualReturnDate(requestDto.getActualReturnDate())

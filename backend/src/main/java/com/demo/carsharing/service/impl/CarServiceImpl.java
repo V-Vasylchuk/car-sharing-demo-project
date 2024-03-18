@@ -33,9 +33,9 @@ public class CarServiceImpl implements CarService {
         log.debug("Try create new Car and save to DB");
         Car car = mapper.toModel(carRequestDto);
         String fileName = awsS3Service.upload(file);
-        car.setBucketName(clientS3Config.getBucketName());
-        car.setKeyName(fileName);
-        carRepository.save(car);
+        car = carRepository.save(car
+                .setBucketName(clientS3Config.getBucketName())
+                .setKeyName(fileName));
         log.debug("New Car {} was created and saved to DB", car);
         return mapper.toDto(car);
     }
@@ -69,11 +69,13 @@ public class CarServiceImpl implements CarService {
     @Transactional
     public CarResponseDto update(CarRequestDto carRequestDto) {
         log.debug("Try update Car by id {} from DB", carRequestDto.getId());
-        Car car = mapper.toModel(carRequestDto);
-        car = carRepository.findById(car.getId()).orElseThrow(() ->
+        Car car = carRepository.findById(carRequestDto.getId()).orElseThrow(() ->
                 new DataProcessingException("Can't find carRequestDto with id: "
                         + carRequestDto.getId()));
-        carRepository.saveAndFlush(car);
+
+        car = mapper.toModel(carRequestDto, car);
+        car = carRepository.saveAndFlush(car);
+
         log.debug("Car by id {} was updated and saved to DB", carRequestDto.getId());
         return mapper.toDto(car);
     }

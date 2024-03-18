@@ -15,4 +15,5 @@ public class UserResponseDto {
     private String lastName;
     private User.Role role;
     private String password;
+    private String chatId;
 }
