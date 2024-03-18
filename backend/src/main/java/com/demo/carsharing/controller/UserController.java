@@ -65,10 +65,7 @@ public class UserController {
     public UserResponseDto updateRole(@PathVariable Long id, @RequestParam("role") String role) {
         log.debug("Try update User Role");
         try {
-            UserRequestDto userRequestDto = new UserRequestDto();
-            userRequestDto.setId(id);
-            userRequestDto.setRole(User.Role.valueOf(role));
-            UserResponseDto userResponseDto = userService.update(userRequestDto);
+            UserResponseDto userResponseDto = userService.updateRole(id, role);
             log.debug("User Role was successfully updated");
             return userResponseDto;
         } catch (IllegalArgumentException e) {

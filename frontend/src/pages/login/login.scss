@@ -180,7 +180,7 @@
 
   .car_img {
     opacity: 2;
-    animation: 2s anim-line ease-out;
+    animation: 2s anim-line linear infinite;
     left: 0;
     position: absolute;
     bottom: 0px;

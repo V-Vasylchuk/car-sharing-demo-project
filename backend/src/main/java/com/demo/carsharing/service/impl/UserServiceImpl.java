@@ -84,8 +84,24 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() ->
                         new DataProcessingException("Not found user with id:%s for update",
                                 userRequestDto.getId()));
-        user = userRepository.save(user);
+
+        user = mapper.toModel(userRequestDto, user);
+        user = userRepository.saveAndFlush(user);
         log.debug("User by id {} was updated and saved to DB", userRequestDto.getId());
+        return mapper.toDto(user);
+    }
+
+    @Override
+    public UserResponseDto updateRole(Long id, String role) {
+        User.Role userRole = User.Role.valueOf(role);log.debug("Try update User Role by id {} from DB", id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() ->
+                        new DataProcessingException("Not found user with id:%s for update", id));
+
+        user.setRole(userRole);
+        user = userRepository.saveAndFlush(user);
+        log.debug("User by id {} was updated and saved to DB", user.getId());
+
         return mapper.toDto(user);
     }
 }

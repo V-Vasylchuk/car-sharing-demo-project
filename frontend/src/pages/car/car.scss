@@ -4,7 +4,7 @@
   background-position: center;
   font-family: "Exo 2";
 
-  .bg_img{
+  .bg_img {
     position: absolute;
     top: 0;
     border-radius: 0;
@@ -51,11 +51,21 @@
     font-size: 20px;
   }
 
+  .text_title {
+    margin: 10px;
+  }
+
+  .text_title_s {
+    padding: 10px;
+    font-weight: 800;
+  }
+
   .car_btn {
     border: solid #d92f2f;
     margin: 20px 10px;
     padding: 15px;
   }
+
   .button-52 {
     font-size: 16px;
     font-weight: 200;
@@ -70,12 +80,12 @@
     -webkit-user-select: none;
     touch-action: manipulation;
 
-    a{
+    a {
       text-decoration: none;
       color: black;
     }
   }
-  
+
   .button-52:after {
     content: "";
     background-color: #b82f1a;
@@ -87,12 +97,12 @@
     left: 7px;
     transition: 0.2s;
   }
-  
+
   .button-52:hover:after {
     top: 0px;
     left: 0px;
   }
-  
+
   @media (min-width: 768px) {
     .button-52 {
       padding: 13px 50px 13px;
@@ -119,7 +129,8 @@
       margin: 20px 0;
     }
   }
-  .btn{
+
+  .btn {
     z-index: 2;
     position: relative;
     margin: 20px 10px;

@@ -14,14 +14,16 @@ const ItemList = (props) => {
         <img src={presignedUrl} alt={model} />
       </div>
       <div className="card-content">
-        <p className="card-title">{model}</p>
-        <p className="card-desc">{brand}</p>
+        <p className="card-title">{brand}</p>
+        <p className="card-desc">{model}</p>
         <p className="card-desc">{type}</p>
       </div>
-      <button className="btn car_btn button-52">
-        <Link to={`/cars/${id}`} >Show more</Link>
-      </button>
-    </div>);
+
+        <Link to={`/cars/${id}`} className="link_btn" ><button className="btn car_btn button-52">Show more </button>
+        </Link>
+
+</div>)
+    ;
 }
 
 export default ItemList;
