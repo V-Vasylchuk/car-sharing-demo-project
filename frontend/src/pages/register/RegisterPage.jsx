@@ -61,6 +61,10 @@ function RegisterPage() {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    if (!validateForm(errors)) {
+      alert('Invalid form');
+      return;
+    }
 
     try {
       let body = {
@@ -109,22 +113,22 @@ function RegisterPage() {
               <div className='firstName'>
                 <label htmlFor='firstName'>First Name</label>
                 <input type='text' name='firstName' onChange={handleChange} noValidate required />
-                {errors.firstName.length > 0 && <span className='error'>{errors.firstName}</span>}
+                {errors.firstName  && errors.firstName.length > 0 && <span className='error'>{errors.firstName}</span>}
               </div>
               <div className='lastName'>
                 <label htmlFor='lastName'>Last Name</label>
                 <input type='text' name='lastName' onChange={handleChange} noValidate />
-                {errors.lastName.length > 0 && <span className='error'>{errors.lastName}</span>}
+                {errors.lastName && errors.lastName.length > 0 && <span className='error'>{errors.lastName}</span>}
               </div>
               <div className='email'>
                 <label htmlFor='email'>Email</label>
                 <input type='email' name='email' onChange={handleChange} noValidate />
-                {errors.email.length > 0 && <span className='error'>{errors.email}</span>}
+                {errors.email && errors.email.length > 0 && <span className='error'>{errors.email}</span>}
               </div>
               <div className='password'>
                 <label htmlFor='password'>Password</label>
                 <input type='password' name='password' onChange={handleChange} noValidate />
-                {errors.password.length > 0 && <span className='error'>{errors.password}</span>}
+                {errors.password && errors.password.length > 0 && <span className='error'>{errors.password}</span>}
               </div>
               <div className='submit'>
                 <button>Create</button>
