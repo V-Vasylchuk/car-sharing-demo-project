@@ -14,7 +14,6 @@ public class UserMapper implements DtoMapper<User, UserRequestDto, UserResponseD
                 .setFirstName(requestDto.getFirstName())
                 .setLastName(requestDto.getLastName())
                 .setEmail(requestDto.getEmail())
-                .setPassword(requestDto.getPassword())
                 .setRole(requestDto.getRole());
     }
 
