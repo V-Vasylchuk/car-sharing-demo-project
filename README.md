@@ -98,7 +98,7 @@ sessionId: The ID of the payment session
 * Stripe
 * Telegram Bots
 * Docker
-* Swagger
+* Swagger 
 
 ### 👨‍👩‍👧‍👦 Our team:
 _Vasylchuk Vasyl_, _Uliana Chorna_, _Yaroslav Voronovskyi_
