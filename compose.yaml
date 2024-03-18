@@ -3,34 +3,44 @@ version: "4.28.0"
 services:
   mysqldb:
     platform: linux/x86_64
-    image: mysql:5.7
-    restart: unless-stopped
+    image: mysql:latest
     env_file: ./.env
     environment:
-      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
-      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+      - MYSQL_ROOT_PASSWORD=${MYSQLDB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQLDB_DATABASE}
     ports:
-      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+      - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
     healthcheck:
-      test: "mysql -u${MYSQLDB_USER} -p${MYSQLDB_ROOT_PASSWORD} ${MYSQLDB_DATABASE}"
+      test: "mysql -u${MYSQLDB_USER} -p${MYSQLDB_ROOT_PASSWORD} ${MYSQLDB_DATABASE} -e 'select 1'"
       interval: 5s
       timeout: 1s
-      retries: 20
-  app:
+      retries: 120
+
+  backend:
+    entrypoint: ["java", "org.springframework.boot.loader.launch.JarLauncher"]
     depends_on:
       mysqldb:
         condition: service_healthy
     restart: on-failure
     image: car-sharing/docker-app
-    build: .
+    build: backend/.
     env_file: ./.env
     ports:
-      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+      - "8080:8080"
     environment:
       SPRING_APPLICATION_JSON: '{
-            "spring.datasource.url"  : "jdbc:mysql://mysqldb:$MYSQLDB_DOCKER_PORT/$MYSQLDB_DATABASE?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC",
-            "spring.datasource.username" : "$MYSQLDB_USER",
-            "spring.datasource.password" : "$MYSQLDB_ROOT_PASSWORD",
-            "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL8Dialect",
-            "spring.jpa.hibernate.ddl-auto" : "validate",
+        "spring.datasource.url" : "jdbc:mysql://mysqldb:$MYSQLDB_DOCKER_PORT/$MYSQLDB_DATABASE?createDatabaseIfNotExist=true&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2",
+        "spring.datasource.driver-class-name" : "com.mysql.cj.jdbc.Driver",
+        "spring.datasource.username" : "$MYSQLDB_USER",
+        "spring.datasource.password" : "$MYSQLDB_ROOT_PASSWORD",
+        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQLDialect",
+        "spring.jpa.hibernate.ddl-auto" : "create"
       }'
+
+  frontend:
+    image: frontend
+    build: frontend/.
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
